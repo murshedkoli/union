@@ -1,29 +1,62 @@
-import { Box } from "@mui/material";
+import { Avatar, Box, Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { mockDataContacts } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
+import { useEffect } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { host } from "../../ConfigurText";
 
-const Contacts = () => {
+const Citizens = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
+
+  const [citizens, setCitizenData] = useState([]);
+
+
+  useEffect(() => {
+    fetch(`${host}/citizens`)
+      .then(res => res.json())
+      .then(data => {
+        setCitizenData(data.result);
+
+
+      })
+  }, []);
+
+
+  const handleClick = (event, cellValues) => {
+    const nid = cellValues.row.nid;
+
+    navigate(`/citizens/${nid}`);
+
+  };
 
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "registrarId", headerName: "Registrar ID" },
+    // { field: "_id", headerName: "ID", flex: 0.5 },
     {
-      field: "name",
+      field: 'image',
+      headerName: 'Image',
+      width: 60,
+      editable: true,
+      renderCell: (params) => <Avatar alt="" src={params.value} />
+      // renderCell will render the component
+    },
+    {
+      field: "nameBn",
       headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "age",
-      headerName: "Age",
-      type: "number",
+      field: "nid",
+      headerName: "NID No.",
       headerAlign: "left",
       align: "left",
+      flex: 1
     },
     {
       field: "phone",
@@ -31,32 +64,48 @@ const Contacts = () => {
       flex: 1,
     },
     {
-      field: "email",
-      headerName: "Email",
+      field: "father",
+      headerName: "Father's Name",
       flex: 1,
     },
     {
-      field: "address",
-      headerName: "Address",
+      field: "holding",
+      headerName: "Holding",
       flex: 1,
     },
     {
-      field: "city",
-      headerName: "City",
+      field: "village",
+      headerName: "Village",
       flex: 1,
     },
     {
-      field: "zipCode",
-      headerName: "Zip Code",
+      field: "paidTax",
+      headerName: "Tax Paid",
       flex: 1,
+    },
+    {
+      field: "Print",
+      renderCell: (cellValues) => {
+        return (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={(event) => {
+              handleClick(event, cellValues);
+            }}
+          >
+            View
+          </Button>
+        );
+      }
     },
   ];
 
   return (
     <Box m="20px">
       <Header
-        title="CONTACTS"
-        subtitle="List of Contacts for Future Reference"
+        title="CITIZENS"
+        subtitle="List of Citizens In Kalikaccha Union"
       />
       <Box
         m="40px 0 0 0"
@@ -91,13 +140,15 @@ const Contacts = () => {
         }}
       >
         <DataGrid
-          rows={mockDataContacts}
+          rows={citizens}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
+          getRowId={(row) => row.nid}
+          checkboxSelection
         />
       </Box>
     </Box>
   );
 };
 
-export default Contacts;
+export default Citizens;

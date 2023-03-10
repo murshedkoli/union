@@ -43,6 +43,7 @@ const Sidebar = () => {
 
   return (
     <Box
+   
       sx={{
         "& .pro-sidebar-inner": {
           background: `${colors.primary[400]} !important`,
@@ -59,6 +60,7 @@ const Sidebar = () => {
         "& .pro-menu-item.active": {
           color: "#6870fa !important",
         },
+       height:'100vh'
       }}
     >
       <ProSidebar collapsed={isCollapsed}>
@@ -118,7 +120,7 @@ const Sidebar = () => {
 
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
-              title="Dashboard"
+              title="ড্যাশবোর্ড"
               to="/"
               icon={<HomeOutlinedIcon />}
               selected={selected}
@@ -130,22 +132,54 @@ const Sidebar = () => {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              Data
+              ব্যবহারকারী
             </Typography>
             <Item
-              title="Manage Team"
+              title="ব্যবহারকারী ফরম"
+              to="/adminform"
+              icon={<PeopleOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
+          <Item
+              title="ব্যবহারকারী তালিকা"
               to="/team"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
+          <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+            >
+              নাগরিক
+            </Typography>
+
             <Item
-              title="Contacts Information"
-              to="/contacts"
+              title="নাগরিক ফরম"
+              to="/form"
+              icon={<PersonOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
+            <Item
+              title="নাগরিক তালিকা"
+              to="/citizens"
               icon={<ContactsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
+             <Item
+              title="প্রত্যয়ন পত্র"
+              to="/prottoyon"
+              icon={<ReceiptOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            
             <Item
               title="Invoices Balances"
               to="/invoices"
@@ -159,15 +193,74 @@ const Sidebar = () => {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              Pages
+              ব্যবসায়
             </Typography>
             <Item
-              title="Profile Form"
-              to="/form"
+              title="ব্যবসায় ফরম"
+              to="/businessform"
               icon={<PersonOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
+
+<Item
+              title="ব্যবসায়ী তালিকা"
+              to="/businesses"
+              icon={<ContactsOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
+<Item
+              title="ব্যবসায়ী সনদ"
+              to="/tradelicenses"
+              icon={<ReceiptOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
+<Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+            >
+              টেক্স
+            </Typography>
+
+           
+
+            <Item
+              title="নাগরিক টেক্স"
+              to="/citizenstax"
+              icon={<ContactsOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+             <Item
+              title="ব্যবসায়ী টেক্স"
+              to="/businesstax"
+              icon={<ReceiptOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            
+            <Item
+              title="বকেয়া টেক্স"
+              to="/duetax"
+              icon={<ReceiptOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            
+
+            <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+            >
+              পেজেস
+            </Typography>
+
             <Item
               title="Calendar"
               to="/calendar"

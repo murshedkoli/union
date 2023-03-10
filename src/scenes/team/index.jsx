@@ -6,27 +6,41 @@ import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettin
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Header";
+import { useEffect, useState } from "react";
+import { host } from "../../ConfigurText";
 
 const Team = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+
+  const [admins, setAdminData] = useState([]);
+
+
+  useEffect(() => {
+    fetch(`${host}/admins`)
+      .then(res => res.json())
+      .then(data => {
+        setAdminData(data.result);
+
+
+      })
+  }, []);
+
+console.log(admins)
+
+
   const columns = [
     { field: "id", headerName: "ID" },
     {
-      field: "name",
+      field: "fullName",
       headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
     },
+   
     {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      headerAlign: "left",
-      align: "left",
-    },
-    {
-      field: "phone",
+      field: "contact",
       headerName: "Phone Number",
       flex: 1,
     },
@@ -34,6 +48,12 @@ const Team = () => {
       field: "email",
       headerName: "Email",
       flex: 1,
+    },
+    {
+      field: "address",
+      headerName: "Address",
+      flex: 1,
+      cellClassName: "name-column--cell",
     },
     {
       field: "accessLevel",
@@ -100,7 +120,7 @@ const Team = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={mockDataTeam} columns={columns} />
+        <DataGrid checkboxSelection rows={admins} columns={columns} />
       </Box>
     </Box>
   );
