@@ -1,13 +1,10 @@
-import { Avatar, Box, Button } from "@mui/material";
+import { Avatar, Box, Button, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { tokens } from "../../theme";
-import { mockDataContacts } from "../../data/mockData";
-import Header from "../../components/Header";
-import { useTheme } from "@mui/material";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "../../components/Header";
 import { host } from "../../ConfigurText";
+import { tokens } from "../../theme";
 
 const Citizens = () => {
   const theme = useTheme();
@@ -16,33 +13,28 @@ const Citizens = () => {
 
   const [citizens, setCitizenData] = useState([]);
 
-
   useEffect(() => {
     fetch(`${host}/citizens`)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         setCitizenData(data.result);
-
-
-      })
+      });
   }, []);
-
 
   const handleClick = (event, cellValues) => {
     const nid = cellValues.row.nid;
 
     navigate(`/citizens/${nid}`);
-
   };
 
   const columns = [
     // { field: "_id", headerName: "ID", flex: 0.5 },
     {
-      field: 'image',
-      headerName: 'Image',
+      field: "image",
+      headerName: "Image",
       width: 60,
       editable: true,
-      renderCell: (params) => <Avatar alt="" src={params.value} />
+      renderCell: (params) => <Avatar alt="" src={params.value} />,
       // renderCell will render the component
     },
     {
@@ -56,10 +48,10 @@ const Citizens = () => {
       headerName: "NID No.",
       headerAlign: "left",
       align: "left",
-      flex: 1
+      flex: 1,
     },
     {
-      field: "phone",
+      field: "contact",
       headerName: "Phone Number",
       flex: 1,
     },
@@ -79,12 +71,23 @@ const Citizens = () => {
       flex: 1,
     },
     {
-      field: "paidTax",
-      headerName: "Tax Paid",
-      flex: 1,
+      field: "current",
+      headerName: "Tax Status",
+
+      renderCell: (cellValues) => {
+        cellValues === new Date().getFullYear() ? (
+          <Button variant="contained" color="success">
+            Paid
+          </Button>
+        ) : (
+          <Button variant="contained" color="error">
+            Due
+          </Button>
+        );
+      },
     },
     {
-      field: "Print",
+      field: "Preview",
       renderCell: (cellValues) => {
         return (
           <Button
@@ -97,7 +100,7 @@ const Citizens = () => {
             View
           </Button>
         );
-      }
+      },
     },
   ];
 

@@ -10,7 +10,8 @@ const AdminForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const handleFormSubmit = (values, { resetForm }) => {
-    fetch(`${host}/addAdmin`, {
+    console.log(values);
+    fetch(`${host}/admins`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
@@ -20,16 +21,12 @@ const AdminForm = () => {
         if (data.msg === "success") {
           swal(
             "ধন্যবাদ!",
-            ` ${values?.fullName} এডমিন হিসাবে সিস্টেমে যুক্ত হয়েছে`,
+            ` ${values.fullName} এডমিন হিসাবে সিস্টেমে যুক্ত হয়েছে`,
             "success"
           );
           resetForm({ values: "" });
         } else {
-          swal(
-            "দুঃখিত!",
-            `  ${values?.fullName} এডমিন হিসাবে সিস্টেমে যুক্ত হয়নি, আবার চেষ্টা করুন `,
-            "warning"
-          );
+          swal("দুঃখিত!", `  ${data.msg} আবার চেষ্টা করুন `, "warning");
         }
       });
   };

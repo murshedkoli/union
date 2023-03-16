@@ -3,19 +3,42 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import axios from "axios";
 import { Formik } from "formik";
 import { useState } from "react";
+import swal from "sweetalert";
 import * as yup from "yup";
 import Header from "../../components/Header";
+import { host } from "../../ConfigurText";
 
 const BusinessForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
-  const handleFormSubmit = (values) => {
-    console.log(values);
-  };
-
   const [imageUrl, setImageUrl] = useState(null);
 
-  console.log(imageUrl);
+  const handleFormSubmit = (values, { resetForm }) => {
+    values.image = imageUrl;
+
+    fetch(`${host}/business`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.msg === "success") {
+          swal(
+            "ধন্যবাদ!",
+            ` ${values?.businessName}  সিস্টেমে যুক্ত হয়েছে`,
+            "success"
+          );
+          resetForm({ values: "" });
+        } else {
+          swal(
+            "দুঃখিত!",
+            `  ${values?.businessName}  সিস্টেমে যুক্ত হয়নি, আবার চেষ্টা করুন `,
+            "warning"
+          );
+        }
+      });
+  };
 
   const uploadImage = (e) => {
     e.preventDefault();
@@ -26,14 +49,15 @@ const BusinessForm = () => {
 
     const options = {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "apllication/json",
       },
     };
 
     axios
-      .post("http://localhost:4000/uploadphoto", imageData, options)
+      .post(`${host}/uploadphoto`, imageData, options)
       .then((res) => {
-        setImageUrl(res.data);
+        const imgUrl = `${host}/${res.data}`;
+        setImageUrl(imgUrl);
       })
       .catch((err) => {});
   };
@@ -66,11 +90,7 @@ const BusinessForm = () => {
               }}
             >
               {imageUrl ? (
-                <img
-                  src={`http://localhost:4000/${imageUrl}`}
-                  alt=""
-                  height="200px"
-                />
+                <img src={imageUrl} alt="" height="200px" />
               ) : (
                 <input onChange={uploadImage} type="file" />
               )}
@@ -270,7 +290,7 @@ const initialValues = {
   businessType: "",
   businessCapital: "",
   licenseFee: "",
-  file: null,
+  image: "",
 };
 
 export default BusinessForm;

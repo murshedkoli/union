@@ -1,14 +1,56 @@
 import { Box, Button, TextField } from "@mui/material";
-import { Formik } from "formik";
-import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import axios from "axios";
+import { Formik } from "formik";
+import { useState } from "react";
+import swal from "sweetalert";
+import * as yup from "yup";
 import Header from "../../components/Header";
+import { host } from "../../ConfigurText";
 
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
-  const handleFormSubmit = (values) => {
-    console.log(values);
+  const [imageUrl, setImageUrl] = useState(null);
+
+  const handleFormSubmit = (values, { resetForm }) => {
+    values.image = imageUrl;
+
+    fetch(`${host}/citizens`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.msg === "success") {
+          swal(
+            "ধন্যবাদ!",
+            ` ${values?.nameBn} নাগরিক হিসেবে  সিস্টেমে যুক্ত হয়েছে`,
+            "success"
+          );
+          resetForm({ values: "" });
+          setImageUrl(null);
+        } else {
+          swal("দুঃখিত!", `  ${data.msg}  `, "warning");
+        }
+      });
+  };
+
+  const uploadImage = (e) => {
+    e.preventDefault();
+    const image = e.target.files[0];
+
+    const imageData = new FormData();
+    imageData.append("avatar", image);
+
+    axios
+      .post(`${host}/uploadphoto`, imageData)
+      .then((res) => {
+        const imgUrl = `${host}/${res.data}`;
+        setImageUrl(imgUrl);
+      })
+      .catch((err) => {});
   };
 
   return (
@@ -29,6 +71,13 @@ const Form = () => {
           handleSubmit,
         }) => (
           <form onSubmit={handleSubmit}>
+            <Box>
+              {imageUrl ? (
+                <img src={imageUrl} srcSet="" alt="" height="200px" />
+              ) : (
+                <input onChange={uploadImage} type="file" />
+              )}
+            </Box>
             <Box
               display="grid"
               gap="30px"
@@ -41,28 +90,85 @@ const Form = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="First Name"
+                label="বাংলায় নাম"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.firstName}
-                name="firstName"
-                error={!!touched.firstName && !!errors.firstName}
-                helperText={touched.firstName && errors.firstName}
+                value={values.nameBn}
+                name="nameBn"
+                error={!!touched.nameBn && !!errors.nameBn}
+                helperText={touched.nameBn && errors.nameBn}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Last Name"
+                label="Name in English"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.lastName}
-                name="lastName"
-                error={!!touched.lastName && !!errors.lastName}
-                helperText={touched.lastName && errors.lastName}
+                value={values.name}
+                name="name"
+                error={!!touched.name && !!errors.name}
+                helperText={touched.name && errors.name}
                 sx={{ gridColumn: "span 2" }}
               />
+
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Father Name Bn"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.father}
+                name="father"
+                error={!!touched.father && !!errors.father}
+                helperText={touched.father && errors.father}
+                sx={{ gridColumn: "span 2" }}
+              />
+
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Mother Name Bn"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.mother}
+                name="mother"
+                error={!!touched.mother && !!errors.mother}
+                helperText={touched.mother && errors.mother}
+                sx={{ gridColumn: "span 2" }}
+              />
+
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="NID Number"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.nid}
+                name="nid"
+                error={!!touched.nid && !!errors.nid}
+                helperText={touched.nid && errors.nid}
+                sx={{ gridColumn: "span 2" }}
+              />
+
+              <TextField
+                fullWidth
+                variant="filled"
+                type="date"
+                label="Date Of Birth"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.dob}
+                name="dob"
+                error={!!touched.dob && !!errors.dob}
+                helperText={touched.dob && errors.dob}
+                sx={{ gridColumn: "span 2" }}
+              />
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -93,26 +199,82 @@ const Form = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Address 1"
+                label="Village"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.address1}
-                name="address1"
-                error={!!touched.address1 && !!errors.address1}
-                helperText={touched.address1 && errors.address1}
+                value={values.village}
+                name="village"
+                error={!!touched.village && !!errors.village}
+                helperText={touched.village && errors.village}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Address 2"
+                label="Holding"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.address2}
-                name="address2"
-                error={!!touched.address2 && !!errors.address2}
-                helperText={touched.address2 && errors.address2}
+                value={values.holding}
+                name="holding"
+                error={!!touched.holding && !!errors.holding}
+                helperText={touched.holding && errors.holding}
+                sx={{ gridColumn: "span 4" }}
+              />
+
+              <TextField
+                fullWidth
+                variant="filled"
+                type="number"
+                label="HoldingNo"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.holdingNo}
+                name="holdingNo"
+                error={!!touched.holdingNo && !!errors.holdingNo}
+                helperText={touched.holdingNo && errors.holdingNo}
+                sx={{ gridColumn: "span 2" }}
+              />
+
+              <TextField
+                fullWidth
+                variant="filled"
+                type="number"
+                label="Tax Ammount"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.taxAmmount}
+                name="taxAmmount"
+                error={!!touched.taxAmmount && !!errors.taxAmmount}
+                helperText={touched.taxAmmount && errors.taxAmmount}
+                sx={{ gridColumn: "span 2" }}
+              />
+
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="House"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.house}
+                name="house"
+                error={!!touched.house && !!errors.house}
+                helperText={touched.house && errors.house}
+                sx={{ gridColumn: "span 4" }}
+              />
+
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Family Member"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.familyMember}
+                name="familyMember"
+                error={!!touched.familyMember && !!errors.familyMember}
+                helperText={touched.familyMember && errors.familyMember}
                 sx={{ gridColumn: "span 4" }}
               />
             </Box>
@@ -132,23 +294,39 @@ const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
 const checkoutSchema = yup.object().shape({
-  firstName: yup.string().required("required"),
-  lastName: yup.string().required("required"),
+  name: yup.string().required("required"),
+  nameBn: yup.string().required("required"),
+  father: yup.string().required("required"),
+  mother: yup.string().required("required"),
+  nid: yup.string().required("required"),
+  dob: yup.string().required("required"),
+  village: yup.string().required("required"),
+  holding: yup.string().required("required"),
+  holdingNo: yup.string().required("required"),
+  taxAmmount: yup.string().required("required"),
+  house: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),
   contact: yup
     .string()
     .matches(phoneRegExp, "Phone number is not valid")
     .required("required"),
-  address1: yup.string().required("required"),
-  address2: yup.string().required("required"),
+  familyMember: yup.string().required("required"),
 });
 const initialValues = {
-  firstName: "",
-  lastName: "",
+  name: "",
+  nameBn: "",
+  father: "",
+  mother: "",
+  nid: "",
+  dob: "",
+  village: "",
+  holding: "",
+  holdingNo: 0,
+  taxAmmount: 0,
+  house: "",
   email: "",
   contact: "",
-  address1: "",
-  address2: "",
+  familyMember: "",
 };
 
 export default Form;
