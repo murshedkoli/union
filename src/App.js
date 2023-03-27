@@ -1,29 +1,31 @@
-import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import Topbar from "./scenes/global/Topbar";
-import Sidebar from "./scenes/global/Sidebar";
-import Dashboard from "./scenes/dashboard";
-import Team from "./scenes/team";
-import Invoices from "./scenes/invoices";
-import Citizens from "./scenes/citizens";
-import Bar from "./scenes/bar";
-import Form from "./scenes/form";
-import Line from "./scenes/line";
-import Pie from "./scenes/pie";
-import FAQ from "./scenes/faq";
-import Geography from "./scenes/geography";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import { ColorModeContext, useMode } from "./theme";
+import { useState } from "react";
+import { Route, Routes } from "react-router-dom";
+import AdminForm from "./scenes/adminform";
+import Bar from "./scenes/bar";
+import Businesses from "./scenes/busensses";
+import BusinessForm from "./scenes/businessform";
+import BusinessTax from "./scenes/businesstax";
 import Calendar from "./scenes/calendar/calendar";
 import CitizenProfile from "./scenes/citizenProfile";
-import AdminForm from "./scenes/adminform";
-import BusinessForm from "./scenes/businessform";
-import Prottoyon from "./scenes/prottoyon";
-import Businesses from "./scenes/busensses";
-import TradeLicenses from "./scenes/tradelicenses";
+import Citizens from "./scenes/citizens";
 import CitizenTax from "./scenes/citizentax";
-import BusinessTax from "./scenes/businesstax";
+import Dashboard from "./scenes/dashboard";
 import DueTax from "./scenes/duetax";
+import FAQ from "./scenes/faq";
+import Form from "./scenes/form";
+import Geography from "./scenes/geography";
+import Sidebar from "./scenes/global/Sidebar";
+import Topbar from "./scenes/global/Topbar";
+import Invoices from "./scenes/invoices";
+import Line from "./scenes/line";
+import Pie from "./scenes/pie";
+import Prottoyon from "./scenes/prottoyon";
+import CommonCertificate from "./scenes/sonod/CommonCertificate";
+import Team from "./scenes/team";
+import TradeLicenses from "./scenes/tradelicenses";
+import UserTransection from "./scenes/transection";
+import { ColorModeContext, useMode } from "./theme";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -40,17 +42,37 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/team" element={<Team />} />
-              <Route path="/citizens" element={<Citizens />} />
-              <Route path="/citizens/:nid" element={<CitizenProfile />} >
+              <Route path="citizens">
+                <Route index element={<Citizens />} />
+                <Route path="transection/:nid" element={<UserTransection />} />
+                <Route
+                  path="certificate/:type/:nid"
+                  element={<CommonCertificate />}
+                />
+                {/* 
+                <Route
+                  path="charactercertificate/:nid"
+                  element={<CharacterCertificate />}
+                />
 
-                {/* <Route path="ncertificate" element={<NationalityCertificate />} />
-                  <Route path="oarish" element={<OarishSanad />} />
-                  <Route path="taxreceipt" element={<Taxreceipt />} />
-                  <Route path="charitrtiksanad" element={<CharitrikSanad />} />
-                  <Route path="tradelicense" element={<TradeLicense />} />
-                  <Route path="licenselist"  >
-                    <Route index element={<TradeLicenseList />} />
-                    <Route path=":lincesKey" element={<LicenseSingle />} /> */}
+                <Route
+                  path="marriedcertificate/:nid"
+                  element={<MarriedCertificate />}
+                />
+
+                <Route
+                  path="unmarriedcertificate/:nid"
+                  element={<UnmarriedCertificate />}
+                />
+
+                <Route
+                  path="landlesscertificate/:nid"
+                  element={<LandLessCertificate />}
+                /> */}
+
+                <Route path=":nid">
+                  <Route index element={<CitizenProfile />} />
+                </Route>
               </Route>
 
               <Route path="/prottoyon" element={<Prottoyon />} />
@@ -59,8 +81,6 @@ function App() {
               <Route path="/citizenstax" element={<CitizenTax />} />
               <Route path="/businesstax" element={<BusinessTax />} />
               <Route path="/duetax" element={<DueTax />} />
-
-
 
               <Route path="/invoices" element={<Invoices />} />
               <Route path="/form" element={<Form />} />
@@ -76,7 +96,7 @@ function App() {
           </main>
         </div>
       </ThemeProvider>
-    </ColorModeContext.Provider >
+    </ColorModeContext.Provider>
   );
 }
 

@@ -1,26 +1,35 @@
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import PaidIcon from "@mui/icons-material/Paid";
 import { Box, Button, Divider, Typography, useTheme } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+
+import { useNavigate, useParams } from "react-router-dom";
 import swal from "sweetalert";
 import Swal from "sweetalert2";
 import Header from "../../components/Header";
 import ProfileText from "../../components/ProfileText";
 import ServicesForCitizen from "../../components/ServicesForCitizen";
 import { host } from "../../ConfigurText";
-import { mockTransactions } from "../../data/mockData";
 import certificate from "../../photos/certificate-svgrepo-com.svg";
 import { tokens } from "../../theme";
 
 const CitizenProfile = () => {
+  const isNonMobile = useMediaQuery("(min-width:1200px)");
+
+  const thisYear = new Date().getFullYear();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const navigate = useNavigate();
 
   const { nid } = useParams();
   const [load, setLoad] = useState(false);
 
   const [citizen, setCitizen] = useState({});
+  const [dataLoad, setDataload] = useState(false);
+  const [familyTax, setFamilyTax] = useState();
+  const familyMember = citizen.familyMember;
 
   useEffect(() => {
     const url = `${host}/citizen/${nid}`;
@@ -28,8 +37,21 @@ const CitizenProfile = () => {
       .then((res) => res.json())
       .then((data) => {
         setCitizen(data.result[0]);
+        if (data.result[0].familyMember) {
+          setDataload(true);
+        }
       });
   }, [nid, load]);
+
+  useEffect(() => {
+    const url = `${host}/citizen/${familyMember}`;
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setFamilyTax(data.result[0]);
+      });
+  }, [dataLoad, familyMember]);
 
   const paidTaxButton = (nid, paidAmount, paidTax) => {
     const dataForSend = {
@@ -86,6 +108,10 @@ const CitizenProfile = () => {
     });
   };
 
+  const navigateFamilyMember = () => {
+    navigate(`/citizens/${citizen.familyMember}`);
+  };
+
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -104,9 +130,10 @@ const CitizenProfile = () => {
               fontWeight: "bold",
               padding: "10px 20px",
             }}
+            onClick={() => navigate(`/citizens/transection/${nid}`)}
           >
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Reports
+            গৃহীত সেবা সমূহ
           </Button>
         </Box>
       </Box>
@@ -120,7 +147,7 @@ const CitizenProfile = () => {
       >
         {/* ROW 2 */}
         <Box
-          gridColumn="span 3"
+          gridColumn={isNonMobile ? "span 3" : "span 5"}
           gridRow="span 3"
           backgroundColor={colors.primary[400]}
         >
@@ -149,11 +176,22 @@ const CitizenProfile = () => {
             >
               {citizen.nameBn}
             </Typography>
+            <Divider />
+            {familyTax && (
+              <Typography
+                mt="20px"
+                textAlign="center"
+                variant="h3"
+                color={colors.blueAccent[400]}
+              >
+                পরিবারের সদস্য: {familyTax?.nameBn}
+              </Typography>
+            )}
           </Box>
         </Box>
 
         <Box
-          gridColumn="span 6"
+          gridColumn={isNonMobile ? "span 6" : "span 7"}
           gridRow="span 3"
           backgroundColor={colors.primary[400]}
         >
@@ -171,10 +209,31 @@ const CitizenProfile = () => {
             alignItems="center"
             justifyContent="center"
           >
-            {citizen.current === new Date().getFullYear() ? (
-              <h3>টেক্স পরিশোধ করা হয়েছে</h3>
+            {citizen.current === thisYear || familyTax?.current === thisYear ? (
+              <>
+                {familyTax?.current === thisYear ? (
+                  <h2>
+                    আপনার টেক্স পরিশোধ করেছে আপনার পরিবারের সদস্য :
+                    <Button
+                      sx={{
+                        backgroundColor: colors.blueAccent[700],
+                        color: colors.grey[100],
+                        fontSize: "14px",
+                        fontWeight: "bold",
+                        padding: "10px 20px",
+                      }}
+                      onClick={() => navigateFamilyMember()}
+                    >
+                      {familyTax?.nameBn}
+                    </Button>
+                  </h2>
+                ) : (
+                  " আপনার টেক্স পরিশোধ ইতিমধ্যে পরিশোধ করেছেন"
+                )}
+              </>
             ) : (
               <Button
+                //
                 onClick={() =>
                   handlConfirm(citizen.nid, citizen.taxAmmount, citizen.paidTax)
                 }
@@ -193,60 +252,9 @@ const CitizenProfile = () => {
           </Box>
         </Box>
 
-        <Box
-          gridColumn="span 3"
-          gridRow="span 3"
-          backgroundColor={colors.primary[400]}
-          overflow="auto"
-        >
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            borderBottom={`4px solid ${colors.primary[500]}`}
-            colors={colors.grey[100]}
-            p="15px"
-          >
-            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Transactions
-            </Typography>
-          </Box>
-          {mockTransactions.map((transaction, i) => (
-            <Box
-              key={`${transaction.txId}-${i}`}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
-            >
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {transaction.txId}
-                </Typography>
-                <Typography color={colors.grey[100]}>
-                  {transaction.user}
-                </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-              >
-                ${transaction.cost}
-              </Box>
-            </Box>
-          ))}
-        </Box>
-
         {/* ROW 3 */}
 
-        <Box gridColumn="span 12" mb="20px">
+        <Box gridColumn="span 12" mb="100px">
           <Header subtitle="Services" />
           <Box
             display="grid"
@@ -254,9 +262,47 @@ const CitizenProfile = () => {
             gridAutoRows="140px"
             gap="20px"
           >
-            <ServicesForCitizen title={"জাতীয়তা সনদ"} icon={certificate} />
-            <ServicesForCitizen title={"চারিত্রিক সনদ"} icon={certificate} />
-            <ServicesForCitizen title={"বৈবাহিক সনদ"} icon={certificate} />
+            <ServicesForCitizen
+              title={"জাতীয়তা সনদ"}
+              icon={certificate}
+              nid={citizen.nid}
+              location="nationalitycertificate"
+            />
+            <ServicesForCitizen
+              title={"চারিত্রিক সনদ"}
+              icon={certificate}
+              nid={citizen.nid}
+              location="charactercertificate"
+            />
+            <ServicesForCitizen
+              title={"বৈবাহিক সনদ"}
+              icon={certificate}
+              nid={citizen.nid}
+              location="marriedcertificate"
+            />
+            <ServicesForCitizen
+              title={"অবিবাহিত সনদ"}
+              icon={certificate}
+              nid={citizen.nid}
+              location="unmarriedcertificate"
+            />
+            <ServicesForCitizen
+              title={"ভূমিহীন সনদ"}
+              icon={certificate}
+              nid={citizen.nid}
+              location="landlesscertificate"
+            />
+            <ServicesForCitizen
+              title={"বৈবাহিক সনদ"}
+              icon={certificate}
+              nid={citizen.nid}
+              location="marriedcertificate"
+            />
+            <ServicesForCitizen
+              title={"বৈবাহিক সনদ"}
+              icon={certificate}
+              nid={citizen.nid}
+            />
           </Box>
         </Box>
       </Box>

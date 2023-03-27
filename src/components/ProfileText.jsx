@@ -7,6 +7,7 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import PhonelinkRingIcon from "@mui/icons-material/PhonelinkRing";
 import Woman2OutlinedIcon from "@mui/icons-material/Woman2Outlined";
 import { Box, Typography, useTheme } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import moment from "moment";
 import React from "react";
 
@@ -14,6 +15,7 @@ import { tokens } from "../theme";
 const ProfileText = ({ citizen }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const isNonMobile = useMediaQuery("(min-width:1200px)");
 
   const textBoxStyles = {
     display: "flex",
@@ -25,17 +27,19 @@ const ProfileText = ({ citizen }) => {
     border: `1px solid ${colors.greenAccent[500]}`,
   };
 
+  const sizeForFont = isNonMobile ? "h3" : "h5";
+
   return (
     <div>
       <Box display="flex" alignItems="center" p="2px 0 0 0">
         <Box sx={textBoxStyles} width="35%" mr="1%">
-          <Typography variant="h3" p="5px">
+          <Typography variant={sizeForFont} p="5px">
             <ManIcon color={colors.greenAccent[400]} /> পিতা
           </Typography>
         </Box>
 
         <Box sx={textBoxStyles} width="64%">
-          <Typography variant="h3" p="5px">
+          <Typography variant={sizeForFont} p="5px">
             {citizen.father}
           </Typography>
         </Box>
@@ -45,13 +49,13 @@ const ProfileText = ({ citizen }) => {
 
       <Box display="flex" alignItems="center" p="2px 0 0 0">
         <Box sx={textBoxStyles} width="35%" mr="1%">
-          <Typography variant="h3" p="5px">
+          <Typography variant={sizeForFont} p="5px">
             <Woman2OutlinedIcon /> মাতা
           </Typography>
         </Box>
 
         <Box sx={textBoxStyles} width="64%">
-          <Typography variant="h3" p="5px">
+          <Typography variant={sizeForFont} p="5px">
             {citizen.mother}
           </Typography>
         </Box>
@@ -61,13 +65,13 @@ const ProfileText = ({ citizen }) => {
 
       <Box display="flex" alignItems="center" p="2px 0 0 0">
         <Box sx={textBoxStyles} width="35%" mr="1%">
-          <Typography variant="h3" p="5px">
+          <Typography variant={sizeForFont} p="5px">
             <PhonelinkRingIcon /> মোবাইল
           </Typography>
         </Box>
 
         <Box sx={textBoxStyles} width="64%">
-          <Typography variant="h3" p="5px">
+          <Typography variant={sizeForFont} p="5px">
             {citizen.contact}
           </Typography>
         </Box>
@@ -77,13 +81,13 @@ const ProfileText = ({ citizen }) => {
 
       <Box display="flex" alignItems="center" p="2px 0 0 0">
         <Box sx={textBoxStyles} width="35%" mr="1%">
-          <Typography variant="h3" p="5px">
+          <Typography variant={sizeForFont} p="5px">
             <BadgeOutlinedIcon /> এনআইডি
           </Typography>
         </Box>
 
         <Box sx={textBoxStyles} width="64%">
-          <Typography variant="h3" p="5px">
+          <Typography variant={sizeForFont} p="5px">
             {citizen.nid}
           </Typography>
         </Box>
@@ -93,13 +97,13 @@ const ProfileText = ({ citizen }) => {
 
       <Box display="flex" alignItems="center" p="2px 0 0 0">
         <Box sx={textBoxStyles} width="35%" mr="1%">
-          <Typography variant="h3" p="5px">
+          <Typography variant={sizeForFont} p="5px">
             <CalendarMonthOutlinedIcon /> জন্ম তারিখ
           </Typography>
         </Box>
 
         <Box sx={textBoxStyles} width="64%">
-          <Typography variant="h3" p="5px">
+          <Typography variant={sizeForFont} p="5px">
             {moment(citizen.dob).format("Do MMMM YYYY")}
           </Typography>
         </Box>
@@ -109,13 +113,13 @@ const ProfileText = ({ citizen }) => {
 
       <Box display="flex" alignItems="center" p="2px 0 0 0">
         <Box sx={textBoxStyles} width="35%" mr="1%">
-          <Typography variant="h3" p="5px">
+          <Typography variant={sizeForFont} p="5px">
             <HouseOutlinedIcon /> হোল্ডিং
           </Typography>
         </Box>
 
         <Box sx={textBoxStyles} width="64%">
-          <Typography variant="h3" p="5px">
+          <Typography variant={sizeForFont} p="5px">
             {citizen.holdingNo}
           </Typography>
         </Box>
@@ -125,13 +129,13 @@ const ProfileText = ({ citizen }) => {
 
       <Box display="flex" alignItems="center" p="2px 0 0 0">
         <Box sx={textBoxStyles} width="35%" mr="1%">
-          <Typography variant="h3" p="5px">
+          <Typography variant={sizeForFont} p="5px">
             <HolidayVillageOutlinedIcon /> গ্রাম
           </Typography>
         </Box>
 
         <Box sx={textBoxStyles} width="64%">
-          <Typography variant="h3" p="5px">
+          <Typography variant={sizeForFont} p="5px">
             {citizen.village}
           </Typography>
         </Box>
@@ -141,13 +145,13 @@ const ProfileText = ({ citizen }) => {
 
       <Box display="flex" alignItems="center" p="2px 0 0 0">
         <Box sx={textBoxStyles} width="35%" mr="1%">
-          <Typography variant="h3" p="5px">
+          <Typography variant={sizeForFont} p="5px">
             <PaymentIcon /> টেক্স
           </Typography>
         </Box>
 
         <Box sx={textBoxStyles} width="64%">
-          <Typography variant="h3" p="5px">
+          <Typography variant={sizeForFont} p="5px">
             {citizen.paidTax}
           </Typography>
         </Box>

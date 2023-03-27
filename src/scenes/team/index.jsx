@@ -1,34 +1,25 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { tokens } from "../../theme";
-import { mockDataTeam } from "../../data/mockData";
-import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
-import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
-import Header from "../../components/Header";
 import { useEffect, useState } from "react";
+import Header from "../../components/Header";
 import { host } from "../../ConfigurText";
+import { tokens } from "../../theme";
 
 const Team = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-
   const [admins, setAdminData] = useState([]);
-
 
   useEffect(() => {
     fetch(`${host}/admins`)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         setAdminData(data.result);
-
-
-      })
+      });
   }, []);
 
-console.log(admins)
-
+  console.log(admins);
 
   const columns = [
     { field: "id", headerName: "ID" },
@@ -38,7 +29,7 @@ console.log(admins)
       flex: 1,
       cellClassName: "name-column--cell",
     },
-   
+
     {
       field: "contact",
       headerName: "Phone Number",
@@ -56,35 +47,9 @@ console.log(admins)
       cellClassName: "name-column--cell",
     },
     {
-      field: "accessLevel",
+      field: "password",
       headerName: "Access Level",
       flex: 1,
-      renderCell: ({ row: { access } }) => {
-        return (
-          <Box
-            width="60%"
-            m="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            backgroundColor={
-              access === "admin"
-                ? colors.greenAccent[600]
-                : access === "manager"
-                ? colors.greenAccent[700]
-                : colors.greenAccent[700]
-            }
-            borderRadius="4px"
-          >
-            {access === "admin" && <AdminPanelSettingsOutlinedIcon />}
-            {access === "manager" && <SecurityOutlinedIcon />}
-            {access === "user" && <LockOpenOutlinedIcon />}
-            <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-              {access}
-            </Typography>
-          </Box>
-        );
-      },
     },
   ];
 
