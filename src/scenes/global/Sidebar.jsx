@@ -57,7 +57,7 @@ const Sidebar = ({ setIsSideMenuFull, isSideMenuFull }) => {
           backgroundColor: "transparent !important",
         },
         "& .pro-inner-item": {
-          padding: "5px 35px 5px 20px !important",
+          padding: "5px 15px 5px 10px !important",
         },
         "& .pro-inner-item:hover": {
           color: "#868dfb !important",
@@ -133,6 +133,7 @@ const Sidebar = ({ setIsSideMenuFull, isSideMenuFull }) => {
             />
 
             <Typography
+              className={isCollapsed && "hidden"}
               variant="h6"
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
