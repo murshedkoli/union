@@ -18,7 +18,7 @@ const Businesses = () => {
     fetch(`${host}/business`)
       .then((res) => res.json())
       .then((data) => {
-        setBusinesses(data.result);
+        setBusinesses(data);
       });
   }, []);
 
