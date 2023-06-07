@@ -22,7 +22,7 @@ const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const isNonMobile = useMediaQuery("(max-width:640px)");
+  const isMobile = useMediaQuery("(max-width:640px)");
 
   return (
     <Box m="20px">
@@ -55,7 +55,7 @@ const Dashboard = () => {
       >
         {/* ROW 1 */}
         <Box
-          gridColumn={isNonMobile ? "span 12" : "span 4"}
+          gridColumn={isMobile ? "span 12" : "span 4"}
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
@@ -74,7 +74,7 @@ const Dashboard = () => {
           />
         </Box>
         <Box
-          gridColumn={isNonMobile ? "span 12" : "span 4"}
+          gridColumn={isMobile ? "span 12" : "span 4"}
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
@@ -93,7 +93,7 @@ const Dashboard = () => {
           />
         </Box>
         <Box
-          gridColumn={isNonMobile ? "span 12" : "span 4"}
+          gridColumn={isMobile ? "span 12" : "span 4"}
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
@@ -112,7 +112,7 @@ const Dashboard = () => {
           />
         </Box>
         <Box
-          gridColumn={isNonMobile ? "span 12" : "span 4"}
+          gridColumn={isMobile ? "span 12" : "span 4"}
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
@@ -134,7 +134,7 @@ const Dashboard = () => {
         {/* ROW 2 */}
 
         <Box
-          gridColumn={isNonMobile ? "span 12" : "span 4"}
+          gridColumn={isMobile ? "span 12" : "span 8"}
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           overflow="auto"
@@ -186,7 +186,7 @@ const Dashboard = () => {
 
         {/* ROW 3 */}
         <Box
-          gridColumn={isNonMobile ? "span 12" : "span 4"}
+          gridColumn={isMobile ? "span 12" : "span 4"}
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           p="30px"
@@ -212,7 +212,7 @@ const Dashboard = () => {
           </Box>
         </Box>
         <Box
-          gridColumn={isNonMobile ? "span 12" : "span 4"}
+          gridColumn={isMobile ? "span 12" : "span 4"}
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
@@ -228,7 +228,7 @@ const Dashboard = () => {
           </Box>
         </Box>
         <Box
-          gridColumn={isNonMobile ? "span 12" : "span 4"}
+          gridColumn={isMobile ? "span 12" : "span 4"}
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           padding="30px"

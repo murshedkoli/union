@@ -38,3 +38,18 @@ body,
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.full-sidebar {
+  margin-left: 280px;
+  transition: 1s;
+}
+
+.half-sidebar {
+  margin-left: 80px;
+  transition: 1s;
+}
+
+.mobile-active {
+  margin-left: 0px;
+  transition: 1s;
+}

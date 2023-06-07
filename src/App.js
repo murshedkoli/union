@@ -1,4 +1,4 @@
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import AdminForm from "./scenes/adminform";
@@ -33,14 +33,28 @@ import { ColorModeContext, useMode } from "./theme";
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
+  const [isSideMenuFull, setIsSideMenuFull] = useState(true);
+  const isMobile = useMediaQuery("(max-width:640px)");
 
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
-          <Sidebar isSidebar={isSidebar} />
-          <main className="content">
+          <Sidebar
+            setIsSideMenuFull={setIsSideMenuFull}
+            isSideMenuFull={isSideMenuFull}
+            isSidebar={isSidebar}
+          />
+          <main
+            className={`content ${
+              isMobile
+                ? "mobile-active"
+                : isSideMenuFull
+                ? "full-sidebar"
+                : "half-sidebar"
+            }`}
+          >
             <Topbar setIsSidebar={setIsSidebar} />
             <Routes>
               <Route path="/" element={<Dashboard />} />
