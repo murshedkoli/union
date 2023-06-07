@@ -1,21 +1,21 @@
-import { useState } from "react";
-import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
-import { Link } from "react-router-dom";
-import "react-pro-sidebar/dist/css/styles.css";
-import { tokens } from "../../theme";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
-import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
-import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
+import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
+import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
+import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
+import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
+import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { useState } from "react";
+import { Menu, MenuItem, ProSidebar } from "react-pro-sidebar";
+import "react-pro-sidebar/dist/css/styles.css";
+import { Link } from "react-router-dom";
+import { tokens } from "../../theme";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -43,7 +43,6 @@ const Sidebar = () => {
 
   return (
     <Box
-   
       sx={{
         "& .pro-sidebar-inner": {
           background: `${colors.primary[400]} !important`,
@@ -60,10 +59,10 @@ const Sidebar = () => {
         "& .pro-menu-item.active": {
           color: "#6870fa !important",
         },
-       height:'100vh'
+        height: "100vh",
       }}
     >
-      <ProSidebar collapsed={isCollapsed}>
+      <ProSidebar className="  max-sm:hidden" collapsed={isCollapsed}>
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
           <MenuItem
@@ -142,14 +141,14 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
 
-          <Item
+            <Item
               title="ব্যবহারকারী তালিকা"
               to="/team"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-          <Typography
+            <Typography
               variant="h6"
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
@@ -172,14 +171,14 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-             <Item
+            <Item
               title="প্রত্যয়ন পত্র"
               to="/prottoyon"
               icon={<ReceiptOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-            
+
             <Item
               title="Invoices Balances"
               to="/invoices"
@@ -203,7 +202,7 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
 
-<Item
+            <Item
               title="ব্যবসায়ী তালিকা"
               to="/businesses"
               icon={<ContactsOutlinedIcon />}
@@ -211,7 +210,7 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
 
-<Item
+            <Item
               title="ব্যবসায়ী সনদ"
               to="/tradelicenses"
               icon={<ReceiptOutlinedIcon />}
@@ -219,15 +218,13 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
 
-<Typography
+            <Typography
               variant="h6"
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
               টেক্স
             </Typography>
-
-           
 
             <Item
               title="নাগরিক টেক্স"
@@ -236,14 +233,14 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-             <Item
+            <Item
               title="ব্যবসায়ী টেক্স"
               to="/businesstax"
               icon={<ReceiptOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-            
+
             <Item
               title="বকেয়া টেক্স"
               to="/duetax"
@@ -251,7 +248,6 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            
 
             <Typography
               variant="h6"

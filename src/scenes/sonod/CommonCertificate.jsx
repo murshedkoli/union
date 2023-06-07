@@ -74,11 +74,11 @@ function CommonCertificate() {
   }, [type]);
 
   useEffect(() => {
-    const url = `${host}/citizen/${nid}`;
+    const url = `${host}/citizens/${nid}`;
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        setCitizen(data.result[0]);
+        setCitizen(data[0]);
       });
   }, [nid]);
 
@@ -93,7 +93,7 @@ function CommonCertificate() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setCertificate(data.result);
+        setCertificate(data);
       });
   }, [certificateType.title, nid]);
 
@@ -101,6 +101,7 @@ function CommonCertificate() {
     const issueDate = moment().format("DD/MM/YYYY");
 
     const Data = {
+      name: citizen.name,
       issueDate: issueDate,
       nid: citizen.nid,
       slNo: new Date().getTime().toString(),
@@ -206,7 +207,7 @@ function CommonCertificate() {
             </div>
 
             <div className="flex-1 flex items-center justify-center">
-              <img className="h-20" src={nlogo} alt="#" srcset={nlogo} />
+              <img className="h-20" src={nlogo} alt="#" srcSet={nlogo} />
             </div>
             <div className="flex-1 text-red-600 text-lg">স্মারক নংঃ {slNo}</div>
           </div>

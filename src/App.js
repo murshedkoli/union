@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import AdminForm from "./scenes/adminform";
 import Bar from "./scenes/bar";
 import Businesses from "./scenes/busensses";
+import BusinessProfile from "./scenes/businessProfile";
 import BusinessForm from "./scenes/businessform";
 import BusinessTax from "./scenes/businesstax";
 import Calendar from "./scenes/calendar/calendar";
@@ -23,6 +24,8 @@ import Pie from "./scenes/pie";
 import Prottoyon from "./scenes/prottoyon";
 import CommonCertificate from "./scenes/sonod/CommonCertificate";
 import Team from "./scenes/team";
+import SingleLicense from "./scenes/tradeLicense";
+import LicensePage from "./scenes/tradeLicense/LicensePage";
 import TradeLicenses from "./scenes/tradelicenses";
 import UserTransection from "./scenes/transection";
 import { ColorModeContext, useMode } from "./theme";
@@ -49,26 +52,6 @@ function App() {
                   path="certificate/:type/:nid"
                   element={<CommonCertificate />}
                 />
-                {/* 
-                <Route
-                  path="charactercertificate/:nid"
-                  element={<CharacterCertificate />}
-                />
-
-                <Route
-                  path="marriedcertificate/:nid"
-                  element={<MarriedCertificate />}
-                />
-
-                <Route
-                  path="unmarriedcertificate/:nid"
-                  element={<UnmarriedCertificate />}
-                />
-
-                <Route
-                  path="landlesscertificate/:nid"
-                  element={<LandLessCertificate />}
-                /> */}
 
                 <Route path=":nid">
                   <Route index element={<CitizenProfile />} />
@@ -76,7 +59,20 @@ function App() {
               </Route>
 
               <Route path="/prottoyon" element={<Prottoyon />} />
-              <Route path="/businesses" element={<Businesses />} />
+              <Route path="/businesses">
+                <Route index element={<Businesses />} />
+                <Route path=":licenseNo" element={<BusinessProfile />} />
+              </Route>
+
+              <Route
+                path="/tradelicense/:licenseNo"
+                element={<SingleLicense />}
+              ></Route>
+
+              <Route
+                path="/tradelicense/:licenseNo/:slNo"
+                element={<LicensePage />}
+              />
               <Route path="/tradelicenses" element={<TradeLicenses />} />
               <Route path="/citizenstax" element={<CitizenTax />} />
               <Route path="/businesstax" element={<BusinessTax />} />

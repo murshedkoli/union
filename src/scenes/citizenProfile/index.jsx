@@ -1,22 +1,18 @@
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import PaidIcon from "@mui/icons-material/Paid";
-import { Box, Button, Divider, Typography, useTheme } from "@mui/material";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import { Button, Typography, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
 import swal from "sweetalert";
 import Swal from "sweetalert2";
-import Header from "../../components/Header";
+import { host } from "../../ConfigurText";
 import ProfileText from "../../components/ProfileText";
 import ServicesForCitizen from "../../components/ServicesForCitizen";
-import { host } from "../../ConfigurText";
 import certificate from "../../photos/certificate-svgrepo-com.svg";
 import { tokens } from "../../theme";
 
 const CitizenProfile = () => {
-  const isNonMobile = useMediaQuery("(min-width:1200px)");
-
   const thisYear = new Date().getFullYear();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -36,8 +32,8 @@ const CitizenProfile = () => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        setCitizen(data.result[0]);
-        if (data.result[0].familyMember) {
+        setCitizen(data[0]);
+        if (data[0].familyMember) {
           setDataload(true);
         }
       });
@@ -49,11 +45,11 @@ const CitizenProfile = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        setFamilyTax(data.result[0]);
+        setFamilyTax(data[0]);
       });
   }, [dataLoad, familyMember]);
 
-  const paidTaxButton = (nid, paidAmount, paidTax) => {
+  const paidTaxButton = (nid, paidAmount, paidTax, name) => {
     const dataForSend = {
       totalTax: parseInt(paidAmount),
       oldTax: parseInt(paidTax),
@@ -68,6 +64,16 @@ const CitizenProfile = () => {
       .then((data) => {
         console.log(data);
         if (data.msg === "success") {
+          fetch(`${host}/taxinfo`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nid, paidAmount, name }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data);
+            });
+
           swal(
             "ধন্যবাদ!",
             ` ${citizen.nameBn} এর বর্তমান অর্থবছরের টেক্স সফলভাবে পরিশোধ হয়েছে`,
@@ -84,7 +90,7 @@ const CitizenProfile = () => {
       });
   };
 
-  const handlConfirm = (nid, taxAmmount, paidTax) => {
+  const handlConfirm = (nid, taxAmmount, paidTax, name) => {
     Swal.fire({
       title: "পরিশোধ করতে ক্লিক করুন",
       html: `<input value=${taxAmmount} readOnly type="number" id="paidAmmount" class="swal2-input" placeholder="টেক্স এর পরিমাণ">`,
@@ -97,7 +103,7 @@ const CitizenProfile = () => {
           Swal.showValidationMessage(`সঠিক পরিমাণ বসান`);
         }
         const paidAmount = parseInt(ammount);
-        paidTaxButton(nid, paidAmount, paidTax);
+        paidTaxButton(nid, paidAmount, paidTax, name);
         return { ammount: paidAmount };
       },
     }).then((result) => {
@@ -113,102 +119,56 @@ const CitizenProfile = () => {
   };
 
   return (
-    <Box m="20px">
-      {/* HEADER */}
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header
-          title={`Profile Of  ${citizen?.name}`}
-          subtitle="Welcome to your dashboard"
-        />
+    <>
+      <div className="p-5 flex flex-col w-full gap-5">
+        <div className="flex justify-between flex-wrap">
+          <div>
+            <h1 className="text-4xl font-bold">Profile Of {citizen?.name}</h1>
+            <p>Welcome to your dashboard</p>
+          </div>
 
-        <Box>
-          <Button
-            sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-            onClick={() => navigate(`/citizens/transection/${nid}`)}
-          >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            গৃহীত সেবা সমূহ
-          </Button>
-        </Box>
-      </Box>
-
-      {/* GRID & CHARTS */}
-      <Box
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
-        gap="20px"
-      >
-        {/* ROW 2 */}
-        <Box
-          gridColumn={isNonMobile ? "span 3" : "span 5"}
-          gridRow="span 3"
-          backgroundColor={colors.primary[400]}
-        >
-          <Box
-            mt="25px"
-            p="0 30px"
-            display="flex "
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Box display="flex" justifyContent="center">
-              <img
-                srcSet=""
-                src={citizen.image}
-                alt={citizen.name}
-                width="80%"
-              />
-            </Box>
-          </Box>
-          <Divider />
-          <Box height="100px" m="20px 0 0 0">
-            <Typography
-              textAlign="center"
-              variant="h1"
-              color={colors.greenAccent[400]}
+          <div>
+            <Button
+              sx={{
+                backgroundColor: colors.blueAccent[700],
+                color: colors.grey[100],
+                fontSize: "14px",
+                fontWeight: "bold",
+                padding: "10px 20px",
+              }}
+              onClick={() => navigate(`/citizens/transection/${nid}`)}
             >
-              {citizen.nameBn}
-            </Typography>
-            <Divider />
-            {familyTax && (
-              <Typography
-                mt="20px"
-                textAlign="center"
-                variant="h3"
-                color={colors.blueAccent[400]}
-              >
-                পরিবারের সদস্য: {familyTax?.nameBn}
-              </Typography>
-            )}
-          </Box>
-        </Box>
+              <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+              গৃহীত সেবা সমূহ
+            </Button>
+          </div>
+        </div>
+        <div className="flex-col">
+          <div className="flex justify-between flex-wrap border-solid border-sky-500 border-2 p-5">
+            <div className=" sm:flex-2 flex flex-col gap-2 mr-5 background-blue-600">
+              <div>
+                <img src={citizen.image} alt={citizen.name} className="w-20" />
+              </div>
+              <div className="text-2xl">{citizen?.nameBn}</div>
+              <div>
+                {familyTax && (
+                  <Typography
+                    mt="20px"
+                    textAlign="center"
+                    variant="h3"
+                    color={colors.blueAccent[400]}
+                  >
+                    পরিবারের সদস্য: {familyTax?.nameBn}
+                  </Typography>
+                )}
+              </div>
+            </div>
+            <div className="flex-2 sm:flex-5">
+              <ProfileText citizen={citizen} />
+            </div>
+          </div>
 
-        <Box
-          gridColumn={isNonMobile ? "span 6" : "span 7"}
-          gridRow="span 3"
-          backgroundColor={colors.primary[400]}
-        >
-          <Box mt="25px" mb="5px" p="0 30px">
-            <Box>
-              <Box pt="10px">
-                <ProfileText citizen={citizen} />
-              </Box>
-            </Box>
-          </Box>
-          <Divider />
-          <Box
-            mt="20px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
+          <div>
             {citizen.current === thisYear || familyTax?.current === thisYear ? (
               <>
                 {familyTax?.current === thisYear ? (
@@ -235,7 +195,12 @@ const CitizenProfile = () => {
               <Button
                 //
                 onClick={() =>
-                  handlConfirm(citizen.nid, citizen.taxAmmount, citizen.paidTax)
+                  handlConfirm(
+                    citizen.nid,
+                    citizen.taxAmmount,
+                    citizen.paidTax,
+                    citizen.name
+                  )
                 }
                 sx={{
                   backgroundColor: colors.blueAccent[700],
@@ -249,64 +214,56 @@ const CitizenProfile = () => {
                 {citizen.taxAmmount} টেক্স পেমেন্ট
               </Button>
             )}
-          </Box>
-        </Box>
-
-        {/* ROW 3 */}
-
-        <Box gridColumn="span 12" mb="100px">
-          <Header subtitle="Services" />
-          <Box
-            display="grid"
-            gridTemplateColumns="repeat(12, 1fr)"
-            gridAutoRows="140px"
-            gap="20px"
-          >
-            <ServicesForCitizen
-              title={"জাতীয়তা সনদ"}
-              icon={certificate}
-              nid={citizen.nid}
-              location="nationalitycertificate"
-            />
-            <ServicesForCitizen
-              title={"চারিত্রিক সনদ"}
-              icon={certificate}
-              nid={citizen.nid}
-              location="charactercertificate"
-            />
-            <ServicesForCitizen
-              title={"বৈবাহিক সনদ"}
-              icon={certificate}
-              nid={citizen.nid}
-              location="marriedcertificate"
-            />
-            <ServicesForCitizen
-              title={"অবিবাহিত সনদ"}
-              icon={certificate}
-              nid={citizen.nid}
-              location="unmarriedcertificate"
-            />
-            <ServicesForCitizen
-              title={"ভূমিহীন সনদ"}
-              icon={certificate}
-              nid={citizen.nid}
-              location="landlesscertificate"
-            />
-            <ServicesForCitizen
-              title={"বৈবাহিক সনদ"}
-              icon={certificate}
-              nid={citizen.nid}
-              location="marriedcertificate"
-            />
-            <ServicesForCitizen
-              title={"বৈবাহিক সনদ"}
-              icon={certificate}
-              nid={citizen.nid}
-            />
-          </Box>
-        </Box>
-      </Box>
-    </Box>
+          </div>
+        </div>
+        {citizen.current !== thisYear ||
+          (familyTax?.current !== thisYear && (
+            <div className="flex w-full flex-wrap">
+              <ServicesForCitizen
+                title={"জাতীয়তা সনদ"}
+                icon={certificate}
+                nid={citizen.nid}
+                location="nationalitycertificate"
+              />
+              <ServicesForCitizen
+                title={"চারিত্রিক সনদ"}
+                icon={certificate}
+                nid={citizen.nid}
+                location="charactercertificate"
+              />
+              <ServicesForCitizen
+                title={"বৈবাহিক সনদ"}
+                icon={certificate}
+                nid={citizen.nid}
+                location="marriedcertificate"
+              />
+              <ServicesForCitizen
+                title={"অবিবাহিত সনদ"}
+                icon={certificate}
+                nid={citizen.nid}
+                location="unmarriedcertificate"
+              />
+              <ServicesForCitizen
+                title={"ভূমিহীন সনদ"}
+                icon={certificate}
+                nid={citizen.nid}
+                location="landlesscertificate"
+              />
+              <ServicesForCitizen
+                title={"বৈবাহিক সনদ"}
+                icon={certificate}
+                nid={citizen.nid}
+                location="marriedcertificate"
+              />
+              <ServicesForCitizen
+                title={"বৈবাহিক সনদ"}
+                icon={certificate}
+                nid={citizen.nid}
+              />
+            </div>
+          ))}
+      </div>
+    </>
   );
 };
 

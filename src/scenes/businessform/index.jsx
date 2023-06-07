@@ -5,8 +5,8 @@ import { Formik } from "formik";
 import { useState } from "react";
 import swal from "sweetalert";
 import * as yup from "yup";
-import Header from "../../components/Header";
 import { host } from "../../ConfigurText";
+import Header from "../../components/Header";
 
 const BusinessForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -90,7 +90,12 @@ const BusinessForm = () => {
               }}
             >
               {imageUrl ? (
-                <img src={imageUrl} alt="" height="200px" />
+                <img
+                  style={{ height: "100px" }}
+                  src={imageUrl}
+                  alt=""
+                  height="200px"
+                />
               ) : (
                 <input onChange={uploadImage} type="file" />
               )}

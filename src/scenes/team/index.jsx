@@ -1,8 +1,8 @@
 import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import Header from "../../components/Header";
 import { host } from "../../ConfigurText";
+import Header from "../../components/Header";
 import { tokens } from "../../theme";
 
 const Team = () => {
@@ -10,23 +10,30 @@ const Team = () => {
   const colors = tokens(theme.palette.mode);
 
   const [admins, setAdminData] = useState([]);
-
   useEffect(() => {
     fetch(`${host}/admins`)
       .then((res) => res.json())
       .then((data) => {
-        setAdminData(data.result);
+        setAdminData(data);
       });
   }, []);
 
-  console.log(admins);
+  const rows = admins.map((row) => ({
+    id: row._id,
+    fullName: row.fullName,
+    email: row.email,
+    contact: row.contact,
+    password: row.password,
+    address: row.address,
+    createdAt: row.createdAt,
+  }));
 
   const columns = [
-    { field: "id", headerName: "ID" },
+    // { field: "id", headerName: "ID", flex: 1 },
     {
       field: "fullName",
       headerName: "Name",
-      flex: 1,
+      flex: 1.2,
       cellClassName: "name-column--cell",
     },
 
@@ -46,9 +53,14 @@ const Team = () => {
       flex: 1,
       cellClassName: "name-column--cell",
     },
+    // {
+    //   field: "password",
+    //   headerName: "Access Level",
+    //   flex: 1,
+    // },
     {
-      field: "password",
-      headerName: "Access Level",
+      field: "createdAt",
+      headerName: "User Created At",
       flex: 1,
     },
   ];
@@ -85,7 +97,12 @@ const Team = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={admins} columns={columns} />
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          checkboxSelection
+          disableRowSelectionOnClick
+        />
       </Box>
     </Box>
   );

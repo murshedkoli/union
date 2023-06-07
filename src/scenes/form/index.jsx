@@ -4,9 +4,8 @@ import axios from "axios";
 import { Formik } from "formik";
 import { useState } from "react";
 import swal from "sweetalert";
-import * as yup from "yup";
-import Header from "../../components/Header";
 import { host } from "../../ConfigurText";
+import Header from "../../components/Header";
 
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -57,11 +56,7 @@ const Form = () => {
     <Box m="20px">
       <Header title="CREATE USER" subtitle="Create a New User Profile" />
 
-      <Formik
-        onSubmit={handleFormSubmit}
-        initialValues={initialValues}
-        validationSchema={checkoutSchema}
-      >
+      <Formik onSubmit={handleFormSubmit} initialValues={initialValues}>
         {({
           values,
           errors,
@@ -73,7 +68,12 @@ const Form = () => {
           <form onSubmit={handleSubmit}>
             <Box>
               {imageUrl ? (
-                <img src={imageUrl} srcSet="" alt="" height="200px" />
+                <img
+                  style={{ height: "100px" }}
+                  src={imageUrl}
+                  srcSet=""
+                  alt=""
+                />
               ) : (
                 <input onChange={uploadImage} type="file" />
               )}
@@ -290,28 +290,6 @@ const Form = () => {
   );
 };
 
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
-
-const checkoutSchema = yup.object().shape({
-  name: yup.string().required("required"),
-  nameBn: yup.string().required("required"),
-  father: yup.string().required("required"),
-  mother: yup.string().required("required"),
-  nid: yup.string().required("required"),
-  dob: yup.string().required("required"),
-  village: yup.string().required("required"),
-  holding: yup.string().required("required"),
-  holdingNo: yup.string().required("required"),
-  taxAmmount: yup.string().required("required"),
-  house: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
-  contact: yup
-    .string()
-    .matches(phoneRegExp, "Phone number is not valid")
-    .required("required"),
-  familyMember: yup.string().required("required"),
-});
 const initialValues = {
   name: "",
   nameBn: "",

@@ -2,8 +2,8 @@ import { Avatar, Box, Button, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../../components/Header";
 import { host } from "../../ConfigurText";
+import Header from "../../components/Header";
 import { tokens } from "../../theme";
 
 const Citizens = () => {
@@ -17,7 +17,7 @@ const Citizens = () => {
     fetch(`${host}/citizens`)
       .then((res) => res.json())
       .then((data) => {
-        setCitizenData(data.result);
+        setCitizenData(data);
       });
   }, []);
 
@@ -26,6 +26,18 @@ const Citizens = () => {
 
     navigate(`/citizens/${nid}`);
   };
+  const rows = citizens.map((row) => ({
+    id: row._id,
+    image: row.image,
+    nameBn: row.nameBn,
+    nid: row.nid,
+    contact: row.contact,
+    father: row.father,
+    village: row.village,
+    current: row.current,
+
+    createdAt: row.createdAt,
+  }));
 
   const columns = [
     // { field: "_id", headerName: "ID", flex: 0.5 },
@@ -60,11 +72,7 @@ const Citizens = () => {
       headerName: "Father's Name",
       flex: 1,
     },
-    {
-      field: "holding",
-      headerName: "Holding",
-      flex: 1,
-    },
+
     {
       field: "village",
       headerName: "Village",
@@ -143,10 +151,9 @@ const Citizens = () => {
         }}
       >
         <DataGrid
-          rows={citizens}
+          rows={rows}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
-          getRowId={(row) => row.nid}
           checkboxSelection
         />
       </Box>

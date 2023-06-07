@@ -1,0 +1,170 @@
+.printableArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.printButton button {
+  background-color: rgb(51, 76, 51);
+  color: whitesmoke;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 05px;
+  padding: 10px;
+  font-size: 15px;
+}
+
+.tradeLicensePrint {
+  width: 7in;
+  height: 9in;
+  margin: 50px;
+  border: 2px solid black;
+  padding: 20px;
+  background-color: whitesmoke;
+  position: relative;
+  margin-top: 5px;
+}
+
+.tradeLicensePrint .licenseHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.tradeLicensePrint .upName {
+  text-align: center;
+  font-weight: bold;
+  font-size: 40px;
+  color: rgb(194, 24, 24);
+}
+
+.tradeLicensePrint .upAddress {
+  text-align: center;
+  color: rgb(8, 8, 176);
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.tradeLicensePrint .logoAndPhoto {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.tradeLicensePrint .logoAndPhoto .upLogo img {
+  height: 80px;
+  width: 80px;
+}
+
+.tradeLicensePrint .logoAndPhoto .licenseTitle {
+  color: whitesmoke;
+  font-weight: bold;
+  background-color: darkblue;
+  padding: 10px;
+  border-radius: 25px;
+}
+
+.tradeLicensePrint .licenseNoWithYear {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.tradeLicensePrint .licenseBody {
+  margin-top: 10px;
+}
+
+.tradeLicensePrint .licenseBody .fullInfo {
+  display: flex;
+}
+
+.tradeLicensePrint .licenseBody .fullInfo .titleText {
+  flex: 1;
+  text-align: right;
+  margin-right: 50px;
+}
+
+.tradeLicensePrint .licenseBody .fullInfo .userInformation {
+  flex: 2;
+}
+
+.tradeLicensePrint .licenseBody .fullInfo .userInformation .licenseText {
+  color: rgb(5, 5, 108);
+  border-bottom: 0.5px solid gray;
+}
+
+.tradeLicensePrint .licenseBody .fixedAddress {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0.2px solid gray;
+  padding: 10px;
+}
+
+.tradeLicensePrint .licenseBody .fixedAddress .addressTitle {
+  font-size: 12px;
+  margin-top: -20px;
+  background-color: whitesmoke;
+  width: fit-content;
+  padding: 0 10px;
+}
+
+.tradeLicensePrint .licenseBody .towColumn {
+  display: flex;
+  justify-content: space-around;
+}
+
+.tradeLicensePrint .licenseBody .licenseText {
+  color: gray;
+  font-size: 20px;
+}
+
+.tradeLicensePrint .licenseBody .licenseFee {
+  display: flex;
+  justify-content: space-between;
+  border: 0.1px solid gray;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+.tradeLicensePrint .licenseFooter .meyad {
+  font-size: 12px;
+  text-align: center;
+}
+
+.tradeLicensePrint .licenseFooter .dateAndSign {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 50px;
+}
+
+.tradeLicensePrint .licenseFooter .dateAndSign .chairmansign {
+  font-size: 15px;
+  text-align: center;
+}
+
+.tradeLicensePrint .userPhoto img {
+  width: 100px;
+  position: absolute;
+  right: 20px;
+  top: 130px;
+}
+
+.licenseCreateButton {
+  background-color: green;
+  color: whitesmoke;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  width: 100%;
+  transition: all 1s;
+}
+
+.licenseCreateButton:hover {
+  background-color: rgb(3, 47, 3);
+}

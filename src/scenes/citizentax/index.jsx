@@ -1,50 +1,29 @@
-import { Avatar, Box, Button } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { tokens } from "../../theme";
-import { mockDataContacts } from "../../data/mockData";
+import { useEffect, useState } from "react";
+import { host } from "../../ConfigurText";
 import Header from "../../components/Header";
-import { useTheme } from "@mui/material";
-import { useEffect } from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { tokens } from "../../theme";
 
 const CitizenTax = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const navigate = useNavigate();
 
-  const [citizens, setCitizenData] = useState([]);
-
+  const [taxStatement, setTaxStatement] = useState([]);
 
   useEffect(() => {
-    fetch(`https://unionparishadservice-server-site-production.up.railway.app/citizen`)
-      .then(res => res.json())
-      .then(data => {
-        setCitizenData(data.citizens);
-
-      })
+    fetch(`${host}/taxinfo`)
+      .then((res) => res.json())
+      .then((data) => {
+        setTaxStatement(data.result);
+      });
   }, []);
 
-
-  const handleClick = (event, cellValues) => {
-    const nid = cellValues.row.nid;
-
-    navigate(`/citizens/${nid}`);
-
-  };
-
   const columns = [
-    // { field: "_id", headerName: "ID", flex: 0.5 },
+    { field: "id", headerName: "ID", flex: 0.5 },
+
     {
-      field: 'image',
-      headerName: 'Image',
-      width: 60,
-      editable: true,
-      renderCell: (params) => <Avatar alt="Remy Sharp" src={params.value} />
-      // renderCell will render the component
-    },
-    {
-      field: "nameBn",
+      field: "name",
       headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
@@ -54,57 +33,28 @@ const CitizenTax = () => {
       headerName: "NID No.",
       headerAlign: "left",
       align: "left",
-      flex: 1
+      flex: 1,
     },
+
     {
-      field: "phone",
-      headerName: "Phone Number",
+      field: "paidAmount",
+      headerName: "Tax Ammount",
       flex: 1,
     },
     {
-      field: "father",
-      headerName: "Father's Name",
+      field: "issueDate",
+      headerName: "Payment Date",
       flex: 1,
-    },
-    {
-      field: "holding",
-      headerName: "Holding",
-      flex: 1,
-    },
-    {
-      field: "village",
-      headerName: "Village",
-      flex: 1,
-    },
-    {
-      field: "paidTax",
-      headerName: "Tax Paid",
-      flex: 1,
-    },
-    {
-      field: "Print",
-      renderCell: (cellValues) => {
-        return (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={(event) => {
-              handleClick(event, cellValues);
-            }}
-          >
-            View
-          </Button>
-        );
-      }
     },
   ];
 
   return (
     <Box m="20px">
       <Header
-        title="CITIZENS"
-        subtitle="List of Citizens In Kalikaccha Union"
+        title="TAX STATEMENT"
+        subtitle="List of Citizens In Tax Statement of Kalikaccha"
       />
+
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -138,10 +88,10 @@ const CitizenTax = () => {
         }}
       >
         <DataGrid
-          rows={citizens}
+          rows={taxStatement}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
-          getRowId={(row) => row._id}
+          getRowId={(row) => row.id}
           checkboxSelection
         />
       </Box>

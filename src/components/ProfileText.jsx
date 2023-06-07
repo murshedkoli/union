@@ -8,11 +8,10 @@ import PhonelinkRingIcon from "@mui/icons-material/PhonelinkRing";
 import Woman2OutlinedIcon from "@mui/icons-material/Woman2Outlined";
 import { Box, Typography, useTheme } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import moment from "moment";
 import React from "react";
 
 import { tokens } from "../theme";
-const ProfileText = ({ citizen }) => {
+const ProfileText = ({ citizen, business }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:1200px)");
@@ -31,133 +30,141 @@ const ProfileText = ({ citizen }) => {
 
   return (
     <div>
-      <Box display="flex" alignItems="center" p="2px 0 0 0">
-        <Box sx={textBoxStyles} width="35%" mr="1%">
-          <Typography variant={sizeForFont} p="5px">
-            <ManIcon color={colors.greenAccent[400]} /> পিতা
-          </Typography>
-        </Box>
+      {business ? (
+        <div>
+          <div className="flex gap-2 justify-between">
+            <div className="flex gap-1">
+              <ManIcon color={colors.greenAccent[400]} />
+              <p>ব্যবসায়ের নাম</p>
+            </div>
+            <p>{citizen.businessName}</p>
+          </div>
 
-        <Box sx={textBoxStyles} width="64%">
-          <Typography variant={sizeForFont} p="5px">
-            {citizen.father}
-          </Typography>
-        </Box>
-      </Box>
+          {/* Another Part */}
 
-      {/* Another Part */}
+          <Box display="flex" alignItems="center" p="2px 0 0 0">
+            <Box sx={textBoxStyles} width="35%" mr="1%">
+              <Typography variant={sizeForFont} p="5px">
+                <Woman2OutlinedIcon /> পিতা
+              </Typography>
+            </Box>
 
-      <Box display="flex" alignItems="center" p="2px 0 0 0">
-        <Box sx={textBoxStyles} width="35%" mr="1%">
-          <Typography variant={sizeForFont} p="5px">
-            <Woman2OutlinedIcon /> মাতা
-          </Typography>
-        </Box>
+            <Box sx={textBoxStyles} width="64%">
+              <Typography variant={sizeForFont} p="5px">
+                {citizen.fathersName}
+              </Typography>
+            </Box>
+          </Box>
 
-        <Box sx={textBoxStyles} width="64%">
-          <Typography variant={sizeForFont} p="5px">
-            {citizen.mother}
-          </Typography>
-        </Box>
-      </Box>
+          {/* Another Part */}
 
-      {/* Another Part */}
+          <Box display="flex" alignItems="center" p="2px 0 0 0">
+            <Box sx={textBoxStyles} width="35%" mr="1%">
+              <Typography variant={sizeForFont} p="5px">
+                <PhonelinkRingIcon /> মোবাইল
+              </Typography>
+            </Box>
 
-      <Box display="flex" alignItems="center" p="2px 0 0 0">
-        <Box sx={textBoxStyles} width="35%" mr="1%">
-          <Typography variant={sizeForFont} p="5px">
-            <PhonelinkRingIcon /> মোবাইল
-          </Typography>
-        </Box>
+            <Box sx={textBoxStyles} width="64%">
+              <Typography variant={sizeForFont} p="5px">
+                {citizen.contact}
+              </Typography>
+            </Box>
+          </Box>
 
-        <Box sx={textBoxStyles} width="64%">
-          <Typography variant={sizeForFont} p="5px">
-            {citizen.contact}
-          </Typography>
-        </Box>
-      </Box>
+          {/* Another Part */}
 
-      {/* Another Part */}
+          <Box display="flex" alignItems="center" p="2px 0 0 0">
+            <Box sx={textBoxStyles} width="35%" mr="1%">
+              <Typography variant={sizeForFont} p="5px">
+                <BadgeOutlinedIcon /> লাইসেন্স নং
+              </Typography>
+            </Box>
 
-      <Box display="flex" alignItems="center" p="2px 0 0 0">
-        <Box sx={textBoxStyles} width="35%" mr="1%">
-          <Typography variant={sizeForFont} p="5px">
-            <BadgeOutlinedIcon /> এনআইডি
-          </Typography>
-        </Box>
+            <Box sx={textBoxStyles} width="64%">
+              <Typography variant={sizeForFont} p="5px">
+                {citizen.licenseNo}
+              </Typography>
+            </Box>
+          </Box>
 
-        <Box sx={textBoxStyles} width="64%">
-          <Typography variant={sizeForFont} p="5px">
-            {citizen.nid}
-          </Typography>
-        </Box>
-      </Box>
+          {/* Another Part */}
 
-      {/* Another Part */}
+          <Box display="flex" alignItems="center" p="2px 0 0 0">
+            <Box sx={textBoxStyles} width="35%" mr="1%">
+              <Typography variant={sizeForFont} p="5px">
+                <CalendarMonthOutlinedIcon /> ব্যবসায়ের ধরন
+              </Typography>
+            </Box>
 
-      <Box display="flex" alignItems="center" p="2px 0 0 0">
-        <Box sx={textBoxStyles} width="35%" mr="1%">
-          <Typography variant={sizeForFont} p="5px">
-            <CalendarMonthOutlinedIcon /> জন্ম তারিখ
-          </Typography>
-        </Box>
+            <Box sx={textBoxStyles} width="64%">
+              <Typography variant={sizeForFont} p="5px">
+                {citizen.businessType}
+              </Typography>
+            </Box>
+          </Box>
 
-        <Box sx={textBoxStyles} width="64%">
-          <Typography variant={sizeForFont} p="5px">
-            {moment(citizen.dob).format("Do MMMM YYYY")}
-          </Typography>
-        </Box>
-      </Box>
+          {/* Another Part */}
 
-      {/* Another Part */}
+          <Box display="flex" alignItems="center" p="2px 0 0 0">
+            <Box sx={textBoxStyles} width="35%" mr="1%">
+              <Typography variant={sizeForFont} p="5px">
+                <HouseOutlinedIcon /> ব্যবসায়ের মূলধন
+              </Typography>
+            </Box>
 
-      <Box display="flex" alignItems="center" p="2px 0 0 0">
-        <Box sx={textBoxStyles} width="35%" mr="1%">
-          <Typography variant={sizeForFont} p="5px">
-            <HouseOutlinedIcon /> হোল্ডিং
-          </Typography>
-        </Box>
+            <Box sx={textBoxStyles} width="64%">
+              <Typography variant={sizeForFont} p="5px">
+                {citizen.businessCapital}
+              </Typography>
+            </Box>
+          </Box>
 
-        <Box sx={textBoxStyles} width="64%">
-          <Typography variant={sizeForFont} p="5px">
-            {citizen.holdingNo}
-          </Typography>
-        </Box>
-      </Box>
+          {/* Another Part */}
 
-      {/* Another Part */}
+          <Box display="flex" alignItems="center" p="2px 0 0 0">
+            <Box sx={textBoxStyles} width="35%" mr="1%">
+              <Typography variant={sizeForFont} p="5px">
+                <HolidayVillageOutlinedIcon /> লাইসেন্স ফি
+              </Typography>
+            </Box>
 
-      <Box display="flex" alignItems="center" p="2px 0 0 0">
-        <Box sx={textBoxStyles} width="35%" mr="1%">
-          <Typography variant={sizeForFont} p="5px">
-            <HolidayVillageOutlinedIcon /> গ্রাম
-          </Typography>
-        </Box>
+            <Box sx={textBoxStyles} width="64%">
+              <Typography variant={sizeForFont} p="5px">
+                {citizen.licenseFee}
+              </Typography>
+            </Box>
+          </Box>
 
-        <Box sx={textBoxStyles} width="64%">
-          <Typography variant={sizeForFont} p="5px">
-            {citizen.village}
-          </Typography>
-        </Box>
-      </Box>
+          {/* Another Part */}
 
-      {/* Another Part */}
+          <Box display="flex" alignItems="center" p="2px 0 0 0">
+            <Box sx={textBoxStyles} width="35%" mr="1%">
+              <Typography variant={sizeForFont} p="5px">
+                <PaymentIcon /> ব্যবসায়ের ঠিকানা
+              </Typography>
+            </Box>
 
-      <Box display="flex" alignItems="center" p="2px 0 0 0">
-        <Box sx={textBoxStyles} width="35%" mr="1%">
-          <Typography variant={sizeForFont} p="5px">
-            <PaymentIcon /> টেক্স
-          </Typography>
-        </Box>
+            <Box sx={textBoxStyles} width="64%">
+              <Typography variant={sizeForFont} p="5px">
+                {citizen.businessAddress}
+              </Typography>
+            </Box>
+          </Box>
 
-        <Box sx={textBoxStyles} width="64%">
-          <Typography variant={sizeForFont} p="5px">
-            {citizen.paidTax}
-          </Typography>
-        </Box>
-      </Box>
-
-      {/* Another Part */}
+          {/* Another Part */}
+        </div>
+      ) : (
+        <div>
+          <div className="flex gap-2 justify-between">
+            <div className="flex gap-1">
+              <ManIcon color={colors.greenAccent[400]} />
+              <p>পিতাঃ</p>
+            </div>
+            <p>{citizen.father}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

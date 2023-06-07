@@ -1,12 +1,10 @@
-import { Avatar, Box, Button } from "@mui/material";
+import { Avatar, Box, Button, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { tokens } from "../../theme";
-import { mockDataContacts } from "../../data/mockData";
-import Header from "../../components/Header";
-import { useTheme } from "@mui/material";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { host } from "../../ConfigurText";
+import Header from "../../components/Header";
+import { tokens } from "../../theme";
 
 const Prottoyon = () => {
   const theme = useTheme();
@@ -15,32 +13,28 @@ const Prottoyon = () => {
 
   const [citizens, setCitizenData] = useState([]);
 
-
   useEffect(() => {
-    fetch(`https://unionparishadservice-server-site-production.up.railway.app/citizen`)
-      .then(res => res.json())
-      .then(data => {
+    fetch(`${host}/citizen`)
+      .then((res) => res.json())
+      .then((data) => {
         setCitizenData(data.citizens);
-
-      })
+      });
   }, []);
-
 
   const handleClick = (event, cellValues) => {
     const nid = cellValues.row.nid;
 
     navigate(`/citizens/${nid}`);
-
   };
 
   const columns = [
     // { field: "_id", headerName: "ID", flex: 0.5 },
     {
-      field: 'image',
-      headerName: 'Image',
+      field: "image",
+      headerName: "Image",
       width: 60,
       editable: true,
-      renderCell: (params) => <Avatar alt="Remy Sharp" src={params.value} />
+      renderCell: (params) => <Avatar alt="Remy Sharp" src={params.value} />,
       // renderCell will render the component
     },
     {
@@ -54,7 +48,7 @@ const Prottoyon = () => {
       headerName: "NID No.",
       headerAlign: "left",
       align: "left",
-      flex: 1
+      flex: 1,
     },
     {
       field: "phone",
@@ -95,7 +89,7 @@ const Prottoyon = () => {
             View
           </Button>
         );
-      }
+      },
     },
   ];
 

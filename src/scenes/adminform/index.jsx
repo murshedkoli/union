@@ -3,8 +3,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { Formik } from "formik";
 import swal from "sweetalert";
 import * as yup from "yup";
-import Header from "../../components/Header";
 import { host } from "../../ConfigurText";
+import Header from "../../components/Header";
 
 const AdminForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");

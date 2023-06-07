@@ -18,11 +18,9 @@ const ServicesForCitizen = ({ icon, title, nid, location }) => {
     mb: "10px",
   };
 
-  const columnWidth = isNonMobile ? "span 2" : "span 3";
-
   return (
     <Box
-      gridColumn={columnWidth}
+      className="border flex-1"
       gridRow="span 1"
       backgroundColor={colors.primary[400]}
       p="30px"
