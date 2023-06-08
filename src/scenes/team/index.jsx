@@ -14,7 +14,7 @@ const Team = () => {
     fetch(`${host}/admins`)
       .then((res) => res.json())
       .then((data) => {
-        setAdminData(data);
+        setAdminData(data.reverse());
       });
   }, []);
 

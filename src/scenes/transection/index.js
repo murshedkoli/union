@@ -3,8 +3,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useEffect, useState } from "react";
 
 import { useParams } from "react-router-dom";
-import Header from "../../components/Header";
 import { host } from "../../ConfigurText";
+import Header from "../../components/Header";
 import { mockTransactions } from "../../data/mockData";
 import { tokens } from "../../theme";
 
@@ -26,7 +26,7 @@ const UserTransection = () => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        setTransection(data.result[0]);
+        setTransection(data.reverse());
       });
   }, [nid, load]);
 

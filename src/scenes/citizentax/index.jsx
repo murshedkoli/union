@@ -15,12 +15,12 @@ const CitizenTax = () => {
     fetch(`${host}/taxinfo`)
       .then((res) => res.json())
       .then((data) => {
-        setTaxStatement(data.result);
+        setTaxStatement(data.reverse());
       });
   }, []);
 
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
+    // { field: "id", headerName: "ID", flex: 0.5 },
 
     {
       field: "name",
@@ -47,6 +47,14 @@ const CitizenTax = () => {
       flex: 1,
     },
   ];
+
+  const rows = taxStatement.map((row) => ({
+    id: row._id,
+    issueDate: row.issueDate,
+    nid: row.nid,
+    paidAmount: row.paidAmount,
+    name: row.name,
+  }));
 
   return (
     <Box m="20px">
@@ -88,10 +96,9 @@ const CitizenTax = () => {
         }}
       >
         <DataGrid
-          rows={taxStatement}
+          rows={rows}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
-          getRowId={(row) => row.id}
           checkboxSelection
         />
       </Box>

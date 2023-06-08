@@ -17,7 +17,7 @@ const Citizens = () => {
     fetch(`${host}/citizens`)
       .then((res) => res.json())
       .then((data) => {
-        setCitizenData(data);
+        setCitizenData(data.reverse());
       });
   }, []);
 
