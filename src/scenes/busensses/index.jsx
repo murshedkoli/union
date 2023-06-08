@@ -29,7 +29,6 @@ const Businesses = () => {
   };
 
   const columns = [
-    // { field: "licenseNo", headerName: "LincenseNo", flex: 0.5 },
     {
       field: "image",
       headerName: "Image",
@@ -51,6 +50,7 @@ const Businesses = () => {
       align: "left",
       flex: 1,
     },
+
     {
       field: "contact",
       headerName: "Phone Number",
@@ -89,6 +89,20 @@ const Businesses = () => {
       },
     },
   ];
+
+  const rows = businesses.map((row) => ({
+    id: row._id,
+    image: row.image,
+    businessName: row.businessName,
+    ownerName: row.ownerName,
+    contact: row.contact,
+    businessType: row.businessType,
+    village: row.village,
+    licenseFee: row.licenseFee,
+    address: row.address,
+    licenseNo: row.licenseNo,
+    createdAt: row.createdAt,
+  }));
 
   return (
     <Box m="20px">
@@ -129,10 +143,9 @@ const Businesses = () => {
         }}
       >
         <DataGrid
-          rows={businesses}
+          rows={rows}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
-          getRowId={(row) => row.id}
           checkboxSelection
         />
       </Box>

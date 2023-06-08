@@ -15,6 +15,7 @@ const BusinessForm = () => {
 
   const handleFormSubmit = (values, { resetForm }) => {
     values.image = imageUrl;
+    values.licenseNo = new Date().getTime().toString();
 
     fetch(`${host}/business`, {
       method: "POST",

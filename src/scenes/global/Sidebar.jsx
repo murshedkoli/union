@@ -126,7 +126,7 @@ const Sidebar = ({ setIsSideMenuFull, isSideMenuFull }) => {
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="ড্যাশবোর্ড"
-              to="/"
+              to="/dashboard"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

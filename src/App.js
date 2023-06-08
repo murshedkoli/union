@@ -18,6 +18,7 @@ import Form from "./scenes/form";
 import Geography from "./scenes/geography";
 import Sidebar from "./scenes/global/Sidebar";
 import Topbar from "./scenes/global/Topbar";
+import HomePage from "./scenes/homepage/HomePage";
 import Invoices from "./scenes/invoices";
 import Line from "./scenes/line";
 import Pie from "./scenes/pie";
@@ -57,7 +58,8 @@ function App() {
           >
             <Topbar setIsSidebar={setIsSidebar} />
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/team" element={<Team />} />
               <Route path="citizens">
                 <Route index element={<Citizens />} />

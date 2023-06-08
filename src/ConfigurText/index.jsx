@@ -1,6 +1,6 @@
 export const unionName = "Kalikaccha Union";
 
-export const host = "https://union-backend.onrender.com";
+export const host = "http://localhost:8000";
 
 // http://localhost:8000
 //https://union-backend.onrender.com

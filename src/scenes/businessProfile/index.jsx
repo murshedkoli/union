@@ -26,7 +26,7 @@ const BusinessProfile = () => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        setBusiness(data.result[0]);
+        setBusiness(data[0]);
       });
   }, [licenseNo]);
 
