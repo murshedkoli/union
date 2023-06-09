@@ -11,20 +11,21 @@ const TradeLicenses = () => {
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
 
-  const [citizens, setCitizenData] = useState([]);
+  const [licensense, setLicensense] = useState([]);
 
   useEffect(() => {
-    fetch(`${host}/citizen`)
+    fetch(`${host}/tradelicense`)
       .then((res) => res.json())
       .then((data) => {
-        setCitizenData(data.citizens);
+        setLicensense(data);
       });
   }, []);
 
   const handleClick = (event, cellValues) => {
-    const nid = cellValues.row.nid;
+    const slNo = cellValues.row.slNo;
+    const licenseNo = cellValues.row.licenseNo;
 
-    navigate(`/citizens/${nid}`);
+    navigate(`/tradelicense/${licenseNo}/${slNo}`);
   };
 
   const columns = [
@@ -38,41 +39,46 @@ const TradeLicenses = () => {
       // renderCell will render the component
     },
     {
-      field: "nameBn",
-      headerName: "Name",
+      field: "businessName",
+      headerName: "Business Name",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "nid",
-      headerName: "NID No.",
+      field: "ownerName",
+      headerName: "ownerName",
       headerAlign: "left",
       align: "left",
       flex: 1,
     },
     {
-      field: "phone",
-      headerName: "Phone Number",
+      field: "slNo",
+      headerName: "slNo",
       flex: 1,
     },
     {
-      field: "father",
-      headerName: "Father's Name",
+      field: "businessAddress",
+      headerName: "businessAddress",
       flex: 1,
     },
     {
-      field: "holding",
-      headerName: "Holding",
+      field: "businessType",
+      headerName: "businessType",
       flex: 1,
     },
     {
-      field: "village",
-      headerName: "Village",
+      field: "licenseFee",
+      headerName: "licenseFee",
       flex: 1,
     },
     {
-      field: "paidTax",
-      headerName: "Tax Paid",
+      field: "fiscalYear",
+      headerName: "fiscalYear",
+      flex: 1,
+    },
+    {
+      field: "issueDate",
+      headerName: "issueDate",
       flex: 1,
     },
     {
@@ -92,6 +98,19 @@ const TradeLicenses = () => {
       },
     },
   ];
+
+  const rows = licensense.map((row) => ({
+    id: row._id,
+    image: row.image,
+    nameBn: row.nameBn,
+    nid: row.nid,
+    contact: row.contact,
+    father: row.father,
+    village: row.village,
+    current: row.current,
+
+    createdAt: row.createdAt,
+  }));
 
   return (
     <Box m="20px">
@@ -132,7 +151,7 @@ const TradeLicenses = () => {
         }}
       >
         <DataGrid
-          rows={citizens}
+          rows={licensense}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
           getRowId={(row) => row._id}

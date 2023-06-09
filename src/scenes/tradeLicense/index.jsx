@@ -1,7 +1,6 @@
 import { React, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import moment from "moment";
 import swal from "sweetalert";
 import { host } from "../../ConfigurText";
 import "./license.css";
@@ -20,7 +19,7 @@ const SingleLicense = () => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        setBusiness(data.result[0]);
+        setBusiness(data[0]);
       });
   }, [licenseNo]);
 
@@ -36,7 +35,36 @@ const SingleLicense = () => {
     return fy;
   };
 
-  const issueDate = moment().format("MM/DD/YYYY");
+  const issueDate = new Date().toDateString();
+
+  const handleTransection = (tdData) => {
+    const transection = {
+      name: tdData.businessName,
+      paidAmounta: tdData.licenseFee,
+      nid: tdData.ownerName,
+      paidDate: new Date().toDateString(),
+      purpose: "ট্রেড লাইসেন্স প্রদান",
+    };
+
+    fetch(`${host}/transection`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(transection),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.msg === "success") {
+          swal("ধন্যবাদ!", `  ব্যবসায়ের ট্রেড লাইসেন্স তৈরি হয়েছে`, "success");
+          navigate(`${tdData.slNo}`);
+        } else {
+          swal(
+            "দুঃখিত!",
+            `  আপনার ট্রেড লাইসেন্সটি তৈরি হয়নি, আবার চেষ্ঠা করুণ `,
+            "warning"
+          );
+        }
+      });
+  };
 
   const handleFormSubmit = () => {
     const tdData = {
@@ -64,8 +92,7 @@ const SingleLicense = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.msg === "success") {
-          swal("ধন্যবাদ!", `  ব্যবসায়ের ট্রেড লাইসেন্স তৈরি হয়েছে`, "success");
-          navigate(`${tdData.slNo}`);
+          handleTransection(tdData);
         } else {
           swal("দুঃখিত!", `  ${data.msg} আবার চেষ্টা করুন `, "warning");
         }

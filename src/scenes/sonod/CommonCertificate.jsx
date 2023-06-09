@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import bglogo from "../../photos/bglogo.png";
 import nlogo from "../../photos/nlogo.png";
 
-import moment from "moment/moment";
 import ReactToPrint from "react-to-print";
 import swal from "sweetalert";
 import { host } from "../../ConfigurText";
@@ -23,14 +22,14 @@ function CommonCertificate() {
     titleBn: "",
     description: "",
   });
-  const [issueDate, setIssueDate] = useState("");
-  const [slNo, setSlNo] = useState("");
+  const [issueDate, setIssueDate] = useState(null);
 
   const [citizen, setCitizen] = useState(null);
 
   const [isClick, setIsClick] = useState(false);
 
   const [certificate, setCertificate] = useState([]);
+  const [submitCer, setSubmitCer] = useState(null);
 
   useEffect(() => {
     if (type === "nationalitycertificate") {
@@ -98,10 +97,10 @@ function CommonCertificate() {
   }, [certificateType.title, nid]);
 
   const submitCertificate = (type, slNo, oldissueDate) => {
-    const issueDate = moment().format("DD/MM/YYYY");
+    const issueDate = new Date().toDateString();
 
     const Data = {
-      name: citizen.name,
+      name: citizen.nameBn,
       issueDate: issueDate,
       nid: citizen.nid,
       slNo: new Date().getTime().toString(),
@@ -115,8 +114,8 @@ function CommonCertificate() {
       })
         .then((res) => res.json())
         .then((data) => {
-          setSlNo(data.slNo);
           setIssueDate(issueDate);
+          setSubmitCer(data.result);
           if (data.msg === "success") {
             swal(
               "ধন্যবাদ!",
@@ -133,7 +132,6 @@ function CommonCertificate() {
           }
         });
     } else {
-      setSlNo(slNo);
       setIssueDate(oldissueDate);
       setIsClick(true);
     }
@@ -209,7 +207,9 @@ function CommonCertificate() {
             <div className="flex-1 flex items-center justify-center">
               <img className="h-20" src={nlogo} alt="#" srcSet={nlogo} />
             </div>
-            <div className="flex-1 text-red-600 text-lg">স্মারক নংঃ {slNo}</div>
+            <div className="flex-1 text-red-600 text-lg">
+              স্মারক নংঃ {submitCer.slNo}
+            </div>
           </div>
 
           <div className="text-center ">

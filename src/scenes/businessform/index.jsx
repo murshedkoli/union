@@ -4,7 +4,6 @@ import axios from "axios";
 import { Formik } from "formik";
 import { useState } from "react";
 import swal from "sweetalert";
-import * as yup from "yup";
 import { host } from "../../ConfigurText";
 import Header from "../../components/Header";
 
@@ -67,11 +66,7 @@ const BusinessForm = () => {
     <Box m="20px">
       <Header title="ব্যবসায় ফরম" subtitle="ব্যবসা প্রতিষ্টান যুক্ত করুন" />
 
-      <Formik
-        onSubmit={handleFormSubmit}
-        initialValues={initialValues}
-        validationSchema={checkoutSchema}
-      >
+      <Formik onSubmit={handleFormSubmit} initialValues={initialValues}>
         {({
           values,
           errors,
@@ -79,7 +74,6 @@ const BusinessForm = () => {
           handleBlur,
           handleChange,
           handleSubmit,
-          setFieldValue,
         }) => (
           <form onSubmit={handleSubmit}>
             <Box
@@ -100,24 +94,6 @@ const BusinessForm = () => {
               ) : (
                 <input onChange={uploadImage} type="file" />
               )}
-
-              {/* <input
-                name="image"
-                ref={fileRef}
-                hidden
-                type="file"
-                onChange={uploadImage}
-              />
-
-              {values.file ? null : (
-                <button
-                  onClick={() => {
-                    fileRef.current.click();
-                  }}
-                >
-                  Upload
-                </button>
-              )} */}
 
               <TextField
                 fullWidth
@@ -267,24 +243,6 @@ const BusinessForm = () => {
   );
 };
 
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
-
-const checkoutSchema = yup.object().shape({
-  businessName: yup.string().required("required"),
-  ownerName: yup.string().required("required"),
-  fathersName: yup.string().required("required"),
-  contact: yup
-    .string()
-    .matches(phoneRegExp, "Phone number is not valid")
-    .required("required"),
-  mothersName: yup.string().required("required"),
-  address: yup.string().required("required"),
-  businessAddress: yup.string().required("required"),
-  businessType: yup.string().required("required"),
-  businessCapital: yup.string().required("required"),
-  licenseFee: yup.string().required("required"),
-});
 const initialValues = {
   businessName: "",
   ownerName: "",

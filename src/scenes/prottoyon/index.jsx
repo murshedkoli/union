@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, useTheme } from "@mui/material";
+import { Box, Button, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,13 +11,13 @@ const Prottoyon = () => {
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
 
-  const [citizens, setCitizenData] = useState([]);
+  const [certificates, setCertificates] = useState([]);
 
   useEffect(() => {
-    fetch(`${host}/citizen`)
+    fetch(`${host}/certificatesubmit`)
       .then((res) => res.json())
       .then((data) => {
-        setCitizenData(data.citizens);
+        setCertificates(data.reverse());
       });
   }, []);
 
@@ -29,16 +29,9 @@ const Prottoyon = () => {
 
   const columns = [
     // { field: "_id", headerName: "ID", flex: 0.5 },
+
     {
-      field: "image",
-      headerName: "Image",
-      width: 60,
-      editable: true,
-      renderCell: (params) => <Avatar alt="Remy Sharp" src={params.value} />,
-      // renderCell will render the component
-    },
-    {
-      field: "nameBn",
+      field: "name",
       headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
@@ -50,31 +43,23 @@ const Prottoyon = () => {
       align: "left",
       flex: 1,
     },
+
     {
-      field: "phone",
-      headerName: "Phone Number",
+      field: "slNo",
+      headerName: "Sl No.",
       flex: 1,
     },
     {
-      field: "father",
-      headerName: "Father's Name",
+      field: "issueDate",
+      headerName: "Issued Date",
       flex: 1,
     },
     {
-      field: "holding",
-      headerName: "Holding",
+      field: "certificate",
+      headerName: "Certificate ",
       flex: 1,
     },
-    {
-      field: "village",
-      headerName: "Village",
-      flex: 1,
-    },
-    {
-      field: "paidTax",
-      headerName: "Tax Paid",
-      flex: 1,
-    },
+
     {
       field: "Print",
       renderCell: (cellValues) => {
@@ -92,6 +77,17 @@ const Prottoyon = () => {
       },
     },
   ];
+
+  const rows = certificates.map((row) => ({
+    id: row._id,
+    name: row.name,
+    issueDate: row.issueDate,
+    nid: row.nid,
+    slNo: row.slNo,
+    certificate: row.certificate,
+
+    createdAt: row.createdAt,
+  }));
 
   return (
     <Box m="20px">
@@ -132,10 +128,9 @@ const Prottoyon = () => {
         }}
       >
         <DataGrid
-          rows={citizens}
+          rows={rows}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
-          getRowId={(row) => row._id}
           checkboxSelection
         />
       </Box>

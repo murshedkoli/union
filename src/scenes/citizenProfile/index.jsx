@@ -57,22 +57,24 @@ const CitizenProfile = () => {
       });
   }, [dataLoad, familyMember]);
 
-  const taxEntry = (name, paidAmount, nid) => {
-    const postTax = {
-      name,
+  const handleTransection = (nameBn, paidAmount, nid) => {
+    const transection = {
+      name: nameBn,
       paidAmount,
       nid,
-      paidDate: new Date(),
+      paidDate: new Date().toDateString(),
+      purpose: "কর আদায়",
     };
 
-    fetch(`${host}/taxinfo`, {
+    fetch(`${host}/transection`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(postTax),
+      body: JSON.stringify(transection),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.msg === "success") {
+          setLoad(true);
           swal(
             "দুঃখিত!",
             `  ${citizen.nameBn} এর বর্তমান অর্থবছরের টেক্স পরিশোধ সফলভাবে সম্পন্ন হয়েছে `,
@@ -88,7 +90,35 @@ const CitizenProfile = () => {
       });
   };
 
-  const paidTaxButton = (nid, paidAmount, paidTax, name) => {
+  const taxEntry = (nameBn, paidAmount, nid) => {
+    const postTax = {
+      name: nameBn,
+      paidAmount,
+      nid,
+      paidDate: new Date(),
+    };
+
+    fetch(`${host}/taxinfo`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(postTax),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.msg === "success") {
+          setLoad(true);
+          handleTransection(nameBn, paidAmount, nid);
+        } else {
+          swal(
+            "দুঃখিত!",
+            `  ${citizen.nameBn} এর বর্তমান অর্থবছরের টেক্স পরিশোধ হয়নি, আবার চেষ্টা করুন `,
+            "warning"
+          );
+        }
+      });
+  };
+
+  const paidTaxButton = (nid, paidAmount, paidTax, nameBn) => {
     const dataForSend = {
       totalTax: parseInt(paidAmount),
       oldTax: parseInt(paidTax),
@@ -102,7 +132,7 @@ const CitizenProfile = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.msg === "success") {
-          taxEntry(name, paidAmount, nid);
+          taxEntry(nameBn, paidAmount, nid);
         } else {
           swal(
             "দুঃখিত!",
@@ -113,7 +143,7 @@ const CitizenProfile = () => {
       });
   };
 
-  const handlConfirm = (nid, taxAmmount, paidTax, name) => {
+  const handlConfirm = (nid, taxAmmount, paidTax, nameBn) => {
     Swal.fire({
       title: "পরিশোধ করতে ক্লিক করুন",
       html: `<input value=${taxAmmount} readOnly type="number" id="paidAmmount" class="swal2-input" placeholder="টেক্স এর পরিমাণ">`,
@@ -126,7 +156,7 @@ const CitizenProfile = () => {
           Swal.showValidationMessage(`সঠিক পরিমাণ বসান`);
         }
         const paidAmount = parseInt(ammount);
-        paidTaxButton(nid, paidAmount, paidTax, name);
+        paidTaxButton(nid, paidAmount, paidTax, nameBn);
         return { ammount: paidAmount };
       },
     }).then((result) => {
@@ -276,7 +306,7 @@ const CitizenProfile = () => {
                           citizen.nid,
                           citizen.taxAmmount,
                           citizen.paidTax,
-                          citizen.name
+                          citizen.nameBn
                         )
                       }
                       sx={{

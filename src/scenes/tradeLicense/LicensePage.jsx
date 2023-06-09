@@ -14,7 +14,7 @@ function LicensePage() {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        setLicense(data.result[0]);
+        setLicense(data[0]);
       });
   }, [slNo]);
 

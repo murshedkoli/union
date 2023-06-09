@@ -1,8 +1,8 @@
+import CardMembershipOutlinedIcon from "@mui/icons-material/CardMembershipOutlined";
+import CurrencyLiraOutlinedIcon from "@mui/icons-material/CurrencyLiraOutlined";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import TrafficIcon from "@mui/icons-material/Traffic";
+import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
+import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 import {
   Box,
   Button,
@@ -10,12 +10,13 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { useEffect, useState } from "react";
+import { host } from "../../ConfigurText";
 import BarChart from "../../components/BarChart";
 import GeographyChart from "../../components/GeographyChart";
 import Header from "../../components/Header";
 import ProgressCircle from "../../components/ProgressCircle";
 import StatBox from "../../components/StatBox";
-import { mockTransactions } from "../../data/mockData";
 import { tokens } from "../../theme";
 
 const Dashboard = () => {
@@ -23,6 +24,59 @@ const Dashboard = () => {
   const colors = tokens(theme.palette.mode);
 
   const isMobile = useMediaQuery("(max-width:640px)");
+  const [certificates, setCertificates] = useState([]);
+
+  useEffect(() => {
+    fetch(`${host}/certificatesubmit`)
+      .then((res) => res.json())
+      .then((data) => {
+        setCertificates(data.length);
+      });
+  }, []);
+  const [citizens, setCitizenData] = useState([]);
+
+  useEffect(() => {
+    fetch(`${host}/citizens`)
+      .then((res) => res.json())
+      .then((data) => {
+        setCitizenData(data.length);
+      });
+  }, []);
+
+  const [businesses, setBusinesses] = useState([]);
+
+  useEffect(() => {
+    fetch(`${host}/business`)
+      .then((res) => res.json())
+      .then((data) => {
+        setBusinesses(data.length);
+      });
+  }, []);
+
+  const [transections, setTransections] = useState([]);
+
+  useEffect(() => {
+    fetch(`${host}/transection`)
+      .then((res) => res.json())
+      .then((data) => {
+        setTransections(data);
+      });
+  }, []);
+
+  const [taxStatement, setTaxStatement] = useState([]);
+
+  useEffect(() => {
+    fetch(`${host}/taxinfo`)
+      .then((res) => res.json())
+      .then((data) => {
+        setTaxStatement(data);
+      });
+  }, []);
+
+  const totalTaxCollected = taxStatement.reduce(
+    (totalTaxCollected, citizen) => totalTaxCollected + citizen.paidAmount,
+    0
+  );
 
   return (
     <Box m="20px">
@@ -62,12 +116,12 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="12,361"
-            subtitle="Emails Sent"
+            title={`${certificates} টি`}
+            subtitle="সনদ প্রদান করা হয়েছে"
             progress="0.75"
             increase="+14%"
             icon={
-              <EmailIcon
+              <CardMembershipOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -81,12 +135,12 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="431,225"
-            subtitle="Sales Obtained"
+            title={`${citizens} জন`}
+            subtitle="নাগরিক যুক্ত আছে"
             progress="0.50"
             increase="+21%"
             icon={
-              <PointOfSaleIcon
+              <GroupAddOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -100,12 +154,12 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="32,441"
-            subtitle="New Clients"
+            title={`${businesses} জন`}
+            subtitle="ব্যবসায়ী যুক্ত আছে"
             progress="0.30"
             increase="+5%"
             icon={
-              <PersonAddIcon
+              <StorefrontOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -119,12 +173,12 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="1,325,134"
-            subtitle="Traffic Received"
+            title={`${totalTaxCollected} টাকা`}
+            subtitle="কর আদায় হয়েছে"
             progress="0.80"
             increase="+43%"
             icon={
-              <TrafficIcon
+              <CurrencyLiraOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -151,9 +205,9 @@ const Dashboard = () => {
               Recent Transactions
             </Typography>
           </Box>
-          {mockTransactions.map((transaction, i) => (
+          {transections.map((transaction) => (
             <Box
-              key={`${transaction.txId}-${i}`}
+              key={transaction._id}
               display="flex"
               justifyContent="space-between"
               alignItems="center"
@@ -166,19 +220,19 @@ const Dashboard = () => {
                   variant="h5"
                   fontWeight="600"
                 >
-                  {transaction.txId}
+                  {transaction.purpose}
                 </Typography>
                 <Typography color={colors.grey[100]}>
-                  {transaction.user}
+                  {transaction.name}
                 </Typography>
               </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
+              <Box color={colors.grey[100]}>{transaction.paidDate}</Box>
               <Box
                 backgroundColor={colors.greenAccent[500]}
                 p="5px 10px"
                 borderRadius="4px"
               >
-                ${transaction.cost}
+                ${transaction.paidAmount}
               </Box>
             </Box>
           ))}

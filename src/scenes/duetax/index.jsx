@@ -10,16 +10,17 @@ const DueTax = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
-
+  const thisYear = new Date().getFullYear();
   const [citizens, setCitizenData] = useState([]);
-
   useEffect(() => {
-    fetch(`${host}/citizen`)
+    fetch(`${host}/citizens`)
       .then((res) => res.json())
       .then((data) => {
-        setCitizenData(data.citizens);
+        const result = data.filter((citizen) => citizen.current !== thisYear);
+
+        setCitizenData(result);
       });
-  }, []);
+  }, [thisYear]);
 
   const handleClick = (event, cellValues) => {
     const nid = cellValues.row.nid;
@@ -60,11 +61,7 @@ const DueTax = () => {
       headerName: "Father's Name",
       flex: 1,
     },
-    {
-      field: "holding",
-      headerName: "Holding",
-      flex: 1,
-    },
+
     {
       field: "village",
       headerName: "Village",
@@ -73,6 +70,11 @@ const DueTax = () => {
     {
       field: "paidTax",
       headerName: "Tax Paid",
+      flex: 1,
+    },
+    {
+      field: "current",
+      headerName: "Last Payment",
       flex: 1,
     },
     {
