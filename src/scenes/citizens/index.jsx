@@ -190,7 +190,7 @@ const Citizens = () => {
           rows={rows}
           columns={isMobile ? mobileColumns : columns}
           components={{ Toolbar: GridToolbar }}
-          checkboxSelection
+          loading={!citizens.length}
         />
       </Box>
     </Box>

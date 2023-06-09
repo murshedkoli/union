@@ -28,8 +28,9 @@ function CommonCertificate() {
 
   const [isClick, setIsClick] = useState(false);
 
-  const [certificate, setCertificate] = useState([]);
+  const [certificates, setCertificate] = useState(null);
   const [submitCer, setSubmitCer] = useState(null);
+  const [slNo, setSlNo] = useState(null);
 
   useEffect(() => {
     if (type === "nationalitycertificate") {
@@ -114,9 +115,10 @@ function CommonCertificate() {
       })
         .then((res) => res.json())
         .then((data) => {
-          setIssueDate(issueDate);
-          setSubmitCer(data.result);
           if (data.msg === "success") {
+            setIssueDate(issueDate);
+            setSubmitCer(data.result);
+            setSlNo(slNo);
             swal(
               "ধন্যবাদ!",
               ` ${citizen?.nameBn} এর জন্য ${certificateType.titleBn} সনদ তৈরি হয়েছে`,
@@ -134,6 +136,7 @@ function CommonCertificate() {
     } else {
       setIssueDate(oldissueDate);
       setIsClick(true);
+      setSlNo(slNo);
     }
   };
 
@@ -207,9 +210,7 @@ function CommonCertificate() {
             <div className="flex-1 flex items-center justify-center">
               <img className="h-20" src={nlogo} alt="#" srcSet={nlogo} />
             </div>
-            <div className="flex-1 text-red-600 text-lg">
-              স্মারক নংঃ {submitCer.slNo}
-            </div>
+            <div className="flex-1 text-red-600 text-lg">স্মারক নংঃ {slNo}</div>
           </div>
 
           <div className="text-center ">
@@ -257,9 +258,9 @@ function CommonCertificate() {
             <div className="h-px bg-gray-200"></div>
 
             <div className="pr-20 pl-20">
-              {certificate?.map((certificate) => (
+              {certificates?.map((certificate) => (
                 <div
-                  key={certificate.slNo}
+                  key={certificate._id}
                   className="flex justify-between items-center ring p-2 mt-2 rounded ring-slate-400"
                 >
                   <p> ইস্যুর তারিখঃ {certificate?.issueDate}</p>

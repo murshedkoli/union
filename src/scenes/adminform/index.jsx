@@ -10,7 +10,6 @@ const AdminForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const handleFormSubmit = (values, { resetForm }) => {
-    console.log(values);
     fetch(`${host}/admins`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
