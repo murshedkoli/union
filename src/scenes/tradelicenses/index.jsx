@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, useTheme } from "@mui/material";
+import { Avatar, Box, Button, useMediaQuery, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ const TradeLicenses = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
-
+  const isMobile = useMediaQuery("(max-width:640px)");
   const [licensense, setLicensense] = useState([]);
 
   useEffect(() => {
@@ -99,6 +99,41 @@ const TradeLicenses = () => {
     },
   ];
 
+  const mobileColumns = [
+    // { field: "_id", headerName: "ID", flex: 0.5 },
+    {
+      field: "image",
+      headerName: "Image",
+      width: 60,
+      editable: true,
+      renderCell: (params) => <Avatar alt="Remy Sharp" src={params.value} />,
+      // renderCell will render the component
+    },
+    {
+      field: "businessName",
+      headerName: "Business Name",
+      flex: 1,
+      cellClassName: "name-column--cell",
+    },
+
+    {
+      field: "Print",
+      renderCell: (cellValues) => {
+        return (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={(event) => {
+              handleClick(event, cellValues);
+            }}
+          >
+            View
+          </Button>
+        );
+      },
+    },
+  ];
+
   const rows = licensense.map((row) => ({
     id: row._id,
     image: row.image,
@@ -114,10 +149,7 @@ const TradeLicenses = () => {
 
   return (
     <Box m="20px">
-      <Header
-        title="CITIZENS"
-        subtitle="List of Citizens In Kalikaccha Union"
-      />
+      <Header title="ট্রেড লাইসেন্স" subtitle="ইস্যূকৃত ট্রেড লাইসেন্স সমূহ" />
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -151,10 +183,9 @@ const TradeLicenses = () => {
         }}
       >
         <DataGrid
-          rows={licensense}
-          columns={columns}
+          rows={rows}
+          columns={isMobile ? mobileColumns : columns}
           components={{ Toolbar: GridToolbar }}
-          getRowId={(row) => row._id}
           checkboxSelection
         />
       </Box>

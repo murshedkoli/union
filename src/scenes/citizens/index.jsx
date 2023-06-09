@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, useTheme } from "@mui/material";
+import { Avatar, Box, Button, useMediaQuery, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ const Citizens = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  const isMobile = useMediaQuery("(max-width:640px)");
 
   const [citizens, setCitizenData] = useState([]);
 
@@ -112,6 +113,41 @@ const Citizens = () => {
     },
   ];
 
+  const mobileColumns = [
+    // { field: "_id", headerName: "ID", flex: 0.5 },
+    {
+      field: "image",
+      headerName: "Image",
+      width: 60,
+      editable: true,
+      renderCell: (params) => <Avatar alt="" src={params.value} />,
+      // renderCell will render the component
+    },
+    {
+      field: "nameBn",
+      headerName: "Name",
+      flex: 1,
+      cellClassName: "name-column--cell",
+    },
+
+    {
+      field: "Preview",
+      renderCell: (cellValues) => {
+        return (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={(event) => {
+              handleClick(event, cellValues);
+            }}
+          >
+            View
+          </Button>
+        );
+      },
+    },
+  ];
+
   return (
     <Box m="20px">
       <Header
@@ -152,7 +188,7 @@ const Citizens = () => {
       >
         <DataGrid
           rows={rows}
-          columns={columns}
+          columns={isMobile ? mobileColumns : columns}
           components={{ Toolbar: GridToolbar }}
           checkboxSelection
         />

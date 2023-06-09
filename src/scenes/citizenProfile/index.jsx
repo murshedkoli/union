@@ -76,7 +76,7 @@ const CitizenProfile = () => {
         if (data.msg === "success") {
           setLoad(true);
           swal(
-            "দুঃখিত!",
+            "ধন্যবাদ!",
             `  ${citizen.nameBn} এর বর্তমান অর্থবছরের টেক্স পরিশোধ সফলভাবে সম্পন্ন হয়েছে `,
             "success"
           );
@@ -95,7 +95,7 @@ const CitizenProfile = () => {
       name: nameBn,
       paidAmount,
       nid,
-      paidDate: new Date(),
+      paidDate: new Date().toDateString(),
     };
 
     fetch(`${host}/taxinfo`, {
@@ -227,9 +227,9 @@ const CitizenProfile = () => {
           </div>
         </div>
 
-        <div className={`flex gap-2 flex-wrap p-2`}>
+        <div className={`flex w-full gap-2 flex-wrap p-2`}>
           <div
-            className="flex-1 p-4 rounded-l-lg"
+            className={` p-4 rounded-l-lg ${isMobile ? undefined : "flex-1"}`}
             style={{ backgroundColor: colors.primary[400] }}
           >
             <p className="text-lg font-bold text-center">ব্যক্তিগত তথ্য</p>
@@ -259,7 +259,7 @@ const CitizenProfile = () => {
             </div>
           </div>
           <div
-            className="flex-1 p-4 "
+            className={` p-4  ${isMobile ? undefined : "flex-1"}`}
             style={{ backgroundColor: colors.primary[400] }}
           >
             <p className="text-lg font-bold text-center">প্রাপ্ত সেবা সমূহ</p>
@@ -267,7 +267,7 @@ const CitizenProfile = () => {
             <div className="mt-4 "></div>
           </div>
           <div
-            className="flex-1 p-4 rounded-r-lg"
+            className={` p-4 rounded-r-lg ${isMobile ? undefined : "flex-1"}`}
             style={{ backgroundColor: colors.primary[400] }}
           >
             <p className="text-lg font-bold text-center">লেনদেন সমূহ</p>

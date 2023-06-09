@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, useTheme } from "@mui/material";
+import { Avatar, Box, Button, useMediaQuery, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import { tokens } from "../../theme";
 const Businesses = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const isMobile = useMediaQuery("(max-width:640px)");
 
   const navigate = useNavigate();
 
@@ -90,6 +91,40 @@ const Businesses = () => {
     },
   ];
 
+  const mobileColumns = [
+    {
+      field: "image",
+      headerName: "Image",
+      width: 60,
+      editable: true,
+      renderCell: (params) => <Avatar alt="" src={params.value} />,
+      // renderCell will render the component
+    },
+    {
+      field: "businessName",
+      headerName: "Name Of Business",
+      flex: 1,
+      cellClassName: "name-column--cell",
+    },
+
+    {
+      field: "licenseNo",
+      renderCell: (cellValues) => {
+        return (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={(event) => {
+              handleClick(event, cellValues);
+            }}
+          >
+            View
+          </Button>
+        );
+      },
+    },
+  ];
+
   const rows = businesses.map((row) => ({
     id: row._id,
     image: row.image,
@@ -107,8 +142,8 @@ const Businesses = () => {
   return (
     <Box m="20px">
       <Header
-        title="BUSINESSES"
-        subtitle="List of Businesses In Kalikaccha Union"
+        title="ব্যবসায় সমূহ"
+        subtitle="কালিকচ্ছ ইউনিয়ন এর অর্ন্তভূক্ত ব্যবসায় সমূহ"
       />
       <Box
         m="40px 0 0 0"
@@ -144,7 +179,7 @@ const Businesses = () => {
       >
         <DataGrid
           rows={rows}
-          columns={columns}
+          columns={isMobile ? mobileColumns : columns}
           components={{ Toolbar: GridToolbar }}
           checkboxSelection
         />

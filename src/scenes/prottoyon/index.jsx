@@ -1,4 +1,4 @@
-import { Box, Button, useTheme } from "@mui/material";
+import { Box, Button, useMediaQuery, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ const Prottoyon = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  const isMobile = useMediaQuery("(max-width:640px)");
 
   const [certificates, setCertificates] = useState([]);
 
@@ -78,6 +79,40 @@ const Prottoyon = () => {
     },
   ];
 
+  const mobileColumns = [
+    // { field: "_id", headerName: "ID", flex: 0.5 },
+
+    {
+      field: "name",
+      headerName: "Name",
+      flex: 1,
+      cellClassName: "name-column--cell",
+    },
+
+    {
+      field: "certificate",
+      headerName: "Certificate ",
+      flex: 1,
+    },
+
+    {
+      field: "Print",
+      renderCell: (cellValues) => {
+        return (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={(event) => {
+              handleClick(event, cellValues);
+            }}
+          >
+            View
+          </Button>
+        );
+      },
+    },
+  ];
+
   const rows = certificates.map((row) => ({
     id: row._id,
     name: row.name,
@@ -91,10 +126,7 @@ const Prottoyon = () => {
 
   return (
     <Box m="20px">
-      <Header
-        title="CITIZENS"
-        subtitle="List of Citizens In Kalikaccha Union"
-      />
+      <Header title="প্রত্যয়ন পত্র" subtitle="ইস্যুকৃত প্রত্যয়ন পত্র সমূহ" />
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -129,7 +161,7 @@ const Prottoyon = () => {
       >
         <DataGrid
           rows={rows}
-          columns={columns}
+          columns={isMobile ? mobileColumns : columns}
           components={{ Toolbar: GridToolbar }}
           checkboxSelection
         />

@@ -1,4 +1,4 @@
-import { Box, useTheme } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { host } from "../../ConfigurText";
@@ -8,6 +8,8 @@ import { tokens } from "../../theme";
 const CitizenTax = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const isMobile = useMediaQuery("(max-width:640px)");
+  const thisYear = new Date().getFullYear();
 
   const [taxStatement, setTaxStatement] = useState([]);
 
@@ -17,7 +19,7 @@ const CitizenTax = () => {
       .then((data) => {
         setTaxStatement(data.reverse());
       });
-  }, []);
+  }, [thisYear]);
 
   const columns = [
     // { field: "id", headerName: "ID", flex: 0.5 },
@@ -42,8 +44,25 @@ const CitizenTax = () => {
       flex: 1,
     },
     {
-      field: "issueDate",
+      field: "paidDate",
       headerName: "Payment Date",
+      flex: 1,
+    },
+  ];
+
+  const mobileColumns = [
+    // { field: "id", headerName: "ID", flex: 0.5 },
+
+    {
+      field: "name",
+      headerName: "Name",
+      flex: 1,
+      cellClassName: "name-column--cell",
+    },
+
+    {
+      field: "paidAmount",
+      headerName: "Tax Ammount",
       flex: 1,
     },
   ];
@@ -58,10 +77,7 @@ const CitizenTax = () => {
 
   return (
     <Box m="20px">
-      <Header
-        title="TAX STATEMENT"
-        subtitle="List of Citizens In Tax Statement of Kalikaccha"
-      />
+      <Header title="আদায়কৃত কর" subtitle="আদায়কৃত করের তালিকা" />
 
       <Box
         m="40px 0 0 0"
@@ -97,7 +113,7 @@ const CitizenTax = () => {
       >
         <DataGrid
           rows={rows}
-          columns={columns}
+          columns={isMobile ? mobileColumns : columns}
           components={{ Toolbar: GridToolbar }}
           checkboxSelection
         />

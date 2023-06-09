@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, useTheme } from "@mui/material";
+import { Avatar, Box, Button, useMediaQuery, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,8 @@ const DueTax = () => {
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const thisYear = new Date().getFullYear();
+  const isMobile = useMediaQuery("(max-width:640px)");
+
   const [citizens, setCitizenData] = useState([]);
   useEffect(() => {
     fetch(`${host}/citizens`)
@@ -18,7 +20,7 @@ const DueTax = () => {
       .then((data) => {
         const result = data.filter((citizen) => citizen.current !== thisYear);
 
-        setCitizenData(result);
+        setCitizenData(result.reverse());
       });
   }, [thisYear]);
 
@@ -95,11 +97,46 @@ const DueTax = () => {
     },
   ];
 
+  const mobileColumns = [
+    // { field: "_id", headerName: "ID", flex: 0.5 },
+    {
+      field: "image",
+      headerName: "Image",
+      width: 60,
+      editable: true,
+      renderCell: (params) => <Avatar alt="Remy Sharp" src={params.value} />,
+      // renderCell will render the component
+    },
+    {
+      field: "nameBn",
+      headerName: "Name",
+      flex: 1,
+      cellClassName: "name-column--cell",
+    },
+
+    {
+      field: "Print",
+      renderCell: (cellValues) => {
+        return (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={(event) => {
+              handleClick(event, cellValues);
+            }}
+          >
+            View
+          </Button>
+        );
+      },
+    },
+  ];
+
   return (
     <Box m="20px">
       <Header
-        title="CITIZENS"
-        subtitle="List of Citizens In Kalikaccha Union"
+        title="বকেয়া কর"
+        subtitle="যারা চলতি অর্থবছরে বকেয়া পরিশোধ করেনি"
       />
       <Box
         m="40px 0 0 0"
@@ -135,7 +172,7 @@ const DueTax = () => {
       >
         <DataGrid
           rows={citizens}
-          columns={columns}
+          columns={isMobile ? mobileColumns : columns}
           components={{ Toolbar: GridToolbar }}
           getRowId={(row) => row._id}
           checkboxSelection
